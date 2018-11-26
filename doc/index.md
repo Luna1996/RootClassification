@@ -1,9 +1,8 @@
 # RootClassification
 
 ## Authors
-> [**`Yifu Wang - 467261`**](https://github.com/Luna1996) (Document author)<a id="w"></a>
-
-> [**`Zhuangyu Han - 467528`**](https://github.com/BeefZong)<a id="h"></a>
+> [**Yifu Wang - 467261**](https://github.com/Luna1996) (Document author)<a id="w"></a>  
+> [**Zhuangyu Han - 467528**](https://github.com/BeefZong)<a id="h"></a>
 
 [`W`]:  #w
 [`H`]:  #h
