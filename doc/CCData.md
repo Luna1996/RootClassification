@@ -19,9 +19,11 @@
 | [c1],[c2],[c3]<a id='c'></a> | float*, int*, int* | The vertex, edge and face lists.           |
 
 ## Static Functions
+
 [LoadPLYFile]:#load-ply-file
+
 > <a id='load-ply-file'></a>
-> **public [CCData]\*  [LoadPLYFile](QString path)**  
+> **[CCData]\*  [LoadPLYFile](QString path)**  
 > 
 > Load the cell complex data from .ply file provide by *path*.
 > 
@@ -31,8 +33,9 @@
 >   Return the [CCData] pointer if succeed, NULL otherwise.
 
 [SaveCCData]:#save-ccdata
-> <a id='save-ccdata'></a>
-> **public int [SaveCCData](QString path, [CCData]\* data)**  
+
+><a id='save-ccdata'></a>
+> **int [SaveCCData](QString path, [CCData]\* data)**  
 > 
 > Save the cell complex data to .ply file provide by *path*.
 > 
