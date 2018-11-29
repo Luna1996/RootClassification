@@ -1,12 +1,15 @@
-#include "mainwindow.h"
-#include <QApplication>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include "ccviewer.h"
 
-int main(int argc, char *argv[])
-{
-  QApplication a(argc, argv);
-  MainWindow w;
-  w.show();
+int main(int argc, char *argv[]) {
+  QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+  QGuiApplication app(argc, argv);
 
+  qmlRegisterType<CCViewer>("RCProject", 1, 0, "CCViewer");
 
-  return a.exec();
+  QQmlApplicationEngine engine;
+  engine.load(QUrl("qrc:src/main.qml"));
+
+  return app.exec();
 }
