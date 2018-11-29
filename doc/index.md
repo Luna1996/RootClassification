@@ -18,9 +18,8 @@ This is the final project for CSE 554A 2018 based on Qt GUI. The goal for this p
 
 ##  Implement
 
-* GUI Design [`W`]
-* GUI Logic
-  * [MainWindow](MainWindow.md)
+* GUI
+  * [CCViewer](CCViewer.md)
 * Algorithm
   * [RootClassification](RootClassification.md)
 * Tools
