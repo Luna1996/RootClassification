@@ -1,15 +1,10 @@
 #ifndef ROOT_H
 #define ROOT_H
 
-
-struct Root
-{
-public:
-    float pos[3];
-    float rgb[3];
-    float radius;
-
-    ~Root();
+struct Root {
+  float pos[3];
+  float rgb[3];
+  float radius;
 };
 
-#endif // ROOT_H
+#endif  // ROOT_H

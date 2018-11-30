@@ -16,7 +16,6 @@ SOURCES += \
 				src/main.cpp \
     src/ccviewer.cpp \
     src/ccdata.cpp \
-    src/root.cpp \
     src/classification.cpp
 
 RESOURCES += qml.qrc
