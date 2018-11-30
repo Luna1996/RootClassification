@@ -14,7 +14,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
 				src/main.cpp \
-    src/ccviewer.cpp
+		src/ccviewer.cpp
 
 RESOURCES += qml.qrc
 
@@ -30,4 +30,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    src/ccviewer.h
+		src/ccviewer.h \
+		src/root.h
