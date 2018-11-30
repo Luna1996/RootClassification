@@ -8,7 +8,7 @@
 ## Properties
 [ccdata]: #ccdata
 [numRootDetected]: #nord
-[root]: #root
+[roots]: #roots
 [mark]: #mk
 [edgeContaining]: #ec
 [edgeContainingL]: #ecn
@@ -19,7 +19,7 @@
 | ---------------------------------- | --------- | ------------------------------------------ |
 | [ccdata]<a id='ccdata'></a> | CCData*    | A CCData structure containing original information of vertices, edges and faces. |
 | [numRootDetected]<a id='nord'></a> | int    | The number of roots that have been detected automatically. |
-| [root]<a id='root'></a> | QList    | An List of root. |
+| [roots]<a id='roots'></a> | QList\<Root\>    | An List of root. |
 | [mark]<a id='mk'></a> | char*    | An 1d char array storing the result of classification. |
 | [edgeContaining]<a id='ec'></a> | int**    | An array in row i storing the indices of edges containing point i. |
 | [edgeContainingL]<a id='ecn'></a> | int*    | An array in row i storing the number of indices of edges containing point i. |
@@ -31,9 +31,19 @@
 [Classification]:#classification
 
 > <a id='classification'></a>
-> **[Classification] (void)**   
+> **[Classification](CCData\* data)** 
+>   
+>   Create and initialize all cells of [mark] to 2.  
+>   Initialize edgeContaining, edgeContainingL, faceContaining and faceContainingL.
 > 
-> Create and initialize all cells of [mark] to -1.
+> * *data*  
+>   The root data need to process.  
+> 
+
+[~Classification]:#nclassification
+
+> <a id='nclassification'></a>
+> **[~Classification] (void)**   
 
 [updateContainings]:#updatecontaining
 
@@ -49,12 +59,6 @@
 > 
 > Mark vertices in spheres to corresponding root.
 > 
-> * *path*  
->   The path of the location you want to save.
-> * *data*  
->   Data.
-> * *return value*  
->   Return the 0 pointer if succeed, non-zero otherwise.
 
 [classify]:#clsf
 

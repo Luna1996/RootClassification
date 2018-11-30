@@ -16,7 +16,8 @@ SOURCES += \
 				src/main.cpp \
     src/ccviewer.cpp \
     src/ccdata.cpp \
-    src/root.cpp
+    src/root.cpp \
+    src/classification.cpp
 
 RESOURCES += qml.qrc
 
@@ -34,4 +35,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     src/ccviewer.h \
 src/ccdata.h \
-    src/root.h
+    src/root.h \
+    src/classification.h
