@@ -4,7 +4,7 @@
 #include "ccviewer.h"
 #include "mainwindow.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
   QGuiApplication app(argc, argv);
 
@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) {
 
   QQmlApplicationEngine engine;
   engine.load(QUrl("qrc:src/main.qml"));
-  CCData::LoadPLYFile(":dat/1.ply");
 
   return app.exec();
 }

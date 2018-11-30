@@ -5,6 +5,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
+#include "root.h"
 
 struct CCData {
   uint n1, n2, n3;
@@ -13,12 +14,13 @@ struct CCData {
   int** c2;
   int** c3;
 
-  //    CCData();
+  void** flat;
+  Sphere* sphere;
+
   ~CCData();
 
   static CCData* LoadPLYFile(QString path);
   static int SaveCCData(QString path, CCData* data);
-  void** flatten(void);
 };
 
 #endif  // CCDATA_H

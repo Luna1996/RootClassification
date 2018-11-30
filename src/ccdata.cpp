@@ -1,4 +1,5 @@
 #include "ccdata.h"
+#include <QDebug>
 
 CCData::~CCData() {
   delete[] c1;
@@ -72,6 +73,8 @@ CCData* CCData::LoadPLYFile(QString path) {
   ans->c2 = e;
   ans->c3 = f;
 
+  ans->flatten();
+
   return ans;
 }
 
@@ -115,10 +118,11 @@ int CCData::SaveCCData(QString path, CCData* cc) {
   }
 }
 
-void** CCData::flatten(void) {
+void CCData::flatten() {
   void** ans = new void*[3];
 
   float* ans1 = new float[(this->n1) * 3];
+
   for (uint i = 0; i < this->n1; i++) {
     ans1[3 * i + 0] = this->c1[i][2];
     ans1[3 * i + 1] = this->c1[i][3];
@@ -137,8 +141,10 @@ void** CCData::flatten(void) {
     ans3[3 * i + 1] = this->c3[i][1];
     ans3[3 * i + 2] = this->c3[i][2];
   }
+
   ans[0] = ans1;
   ans[1] = ans2;
   ans[2] = ans3;
-  return ans;
+
+  flat = ans;
 }

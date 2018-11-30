@@ -8,5 +8,6 @@
         <file>dat/3.ply</file>
         <file>dat/4.ply</file>
         <file>dat/5.ply</file>
+        <file>dat/0.ply</file>
     </qresource>
 </RCC>

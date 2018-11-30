@@ -39,9 +39,9 @@ void CCViewer::resizeGL() {
 
   float aspect = w / h;
   const qreal zNear = 0, zFar = 100.0, fov = 70.0;
-  projection.setToIdentity();
-  projection.perspective(fov, aspect, zNear, zFar);
-  projection.lookAt(QVector3D(10, 10, 10), QVector3D(1, 1, 1),
+  P.setToIdentity();
+  P.perspective(fov, aspect, zNear, zFar);
+  P.lookAt(QVector3D(10, 10, 10), QVector3D(1, 1, 1),
                     QVector3D(0, 1, 0));
 }
 
@@ -116,7 +116,7 @@ void CCViewer::paint() {
   prog->bind();
 
   resizeGL();
-  prog->setUniformValue(prog->uniformLocation("mvp"), projection);
+  prog->setUniformValue(prog->uniformLocation("mvp"), P);
 
   glBindVertexArray(vao);
 

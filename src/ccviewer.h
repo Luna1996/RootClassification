@@ -18,7 +18,7 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   char* mark;
 
   SP* prog;
-  QMatrix4x4 projection;
+  QMatrix4x4 P;
   GLuint vao;
   struct {
     GLuint m, v, e, f;

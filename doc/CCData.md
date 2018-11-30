@@ -12,11 +12,14 @@
 [c1]: #c1
 [c2]: #c2
 [c3]: #c3
+[flat]: #flat
 
-| Name                               | Type      | Discription                                |
-| ---------------------------------- | --------- | ------------------------------------------ |
-| [n1],[n2],[n3]<a id='n'></a> | int, int, int     | The length of vertex, edge and face lists. |
+| Name                         | Type               | Discription                                |
+| ---------------------------- | ------------------ | ------------------------------------------ |
+| [n1],[n2],[n3]<a id='n'></a> | int, int, int      | The length of vertex, edge and face lists. |
 | [c1],[c2],[c3]<a id='c'></a> | float*, int*, int* | The vertex, edge and face lists.           |
+| [flat]<a id='flat'></a>      | void**             | Flattened data for rendering purpose.      |
+| [sphere]<a id='sphere'></a>  |
 
 ## Static Functions
 
@@ -25,7 +28,7 @@
 > <a id='load-ply-file'></a>
 > **[CCData]\*  [LoadPLYFile](QString path)**  
 > 
-> Load the cell complex data from .ply file provide by *path*.
+> Load the cell complex data from .ply file provide by *path*. After loaded, [LoadPLYFile] will auto flatten the data and calculate the containing sphere of all points.
 > 
 > * *path*  
 >   The path of the file.
@@ -45,13 +48,3 @@
 >   Data.
 > * *return value*  
 >   Return the 0 pointer if succeed, non-zero otherwise.
-
-[flatten]:#flatten
-
-><a id='flatten'></a>
-> **void\*\* [flatten]\()**  
-> 
-> Extract vertices, edges and faces as an 1d array for OpenGL use.
->   
-> * *return value*  
->   Store three flattened array pointers in a void*[3] list [float*, int*, int*]
