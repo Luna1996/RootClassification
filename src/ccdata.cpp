@@ -116,6 +116,34 @@ int CCData::SaveCCData(QString path, CCData* cc){
     }
 }
 
+void* CCData::extract1d(int comp){
+    if(comp == 1){
+        float* ans = new float[(this->n1)*3];
+        for(int i = 0;i<this->n1;i++){
+            ans[3*i+0] = this->c1[i][2];
+            ans[3*i+1] = this->c1[i][3];
+            ans[3*i+2] = this->c1[i][4];
+        }
+        return ans;
+    }
+    else if(comp == 2){
+        int* ans = new int[(this->n2)*2];
+        for(int i = 0;i<this->n2;i++){
+            ans[2*i+0] = this->c2[i][0];
+            ans[2*i+1] = this->c2[i][1];
+        }
+        return ans;
+    }
+    else{
+        int* ans = new int[(this->n3)*3];
+        for(int i = 0;i<this->n3;i++){
+            ans[3*i+0] = this->c3[i][0];
+            ans[3*i+1] = this->c3[i][1];
+            ans[3*i+2] = this->c3[i][2];
+        }
+        return ans;
+    }
+}
 
 
 
