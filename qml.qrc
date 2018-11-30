@@ -3,5 +3,10 @@
         <file>src/main.qml</file>
         <file>src/cc.frag</file>
         <file>src/cc.vert</file>
+        <file>dat/1.ply</file>
+        <file>dat/2.ply</file>
+        <file>dat/3.ply</file>
+        <file>dat/4.ply</file>
+        <file>dat/5.ply</file>
     </qresource>
 </RCC>

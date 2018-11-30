@@ -3,18 +3,21 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.11
 import RCProject 1.0
 
-Window {
+RCWindow {
 	visible: true
-	visibility: "FullScreen"
+	width: 700
+	height: 500
 	title: qsTr("Root Classification")
 	RowLayout {
 		anchors.fill: parent
 		Rectangle {
+			id: panel
 			color: 'gray'
-			Layout.preferredWidth: 200
+			width: 200
 			Layout.fillHeight: true
 		}
 		CCViewer {
+			objectName: "ccviewer"
 			Layout.fillWidth: true
 			Layout.fillHeight: true
 		}

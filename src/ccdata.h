@@ -1,25 +1,24 @@
 #ifndef CCDATA_H
 #define CCDATA_H
 
-#include <QString>
 #include <QFile>
-#include <QTextStream>
+#include <QString>
 #include <QStringList>
+#include <QTextStream>
 
-struct CCData{
+struct CCData {
+  uint n1, n2, n3;
 
-    int n1, n2, n3;
+  float** c1;
+  int** c2;
+  int** c3;
 
-    float** c1;
-    int** c2;
-    int** c3;
+  //    CCData();
+  ~CCData();
 
-//    CCData();
-    ~CCData();
-
-    static CCData* LoadPLYFile(QString path);
-    static int SaveCCData(QString path, CCData* data);
-    void** flatten(void);
+  static CCData* LoadPLYFile(QString path);
+  static int SaveCCData(QString path, CCData* data);
+  void** flatten(void);
 };
 
-#endif // CCDATA_H
+#endif  // CCDATA_H

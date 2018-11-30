@@ -13,31 +13,31 @@ typedef QOpenGLShaderProgram SP;
 class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   Q_OBJECT
 
-  CCData* raw;
-  float* vetx;
-  int* edge;
-  int* face;
-  char* result;
   Root** roots;
+  CCData* raw;
+  char* mark;
 
   SP* prog;
   QMatrix4x4 projection;
-  GLuint buf[4];
   GLuint vao;
+  struct {
+    GLuint m, v, e, f;
+  } vbo;
 
  public:
   CCViewer();
   void setRaw(CCData* raw);
+  void setMark(char* m);
 
  private:
   static SP* loadShaderProgram(QString urls[2]);
+  void resizeGL();
 
  private slots:
   void onWindowChanged(QQuickWindow* win);
   void init();
   void clean();
   void paint();
-  void resizeGL();
 };
 
 struct ShaderInfo {

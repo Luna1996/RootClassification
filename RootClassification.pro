@@ -16,7 +16,8 @@ SOURCES += \
 				src/main.cpp \
     src/ccviewer.cpp \
     src/ccdata.cpp \
-    src/classification.cpp
+    src/classification.cpp \
+    src/mainwindow.cpp
 
 RESOURCES += qml.qrc
 
@@ -35,4 +36,5 @@ HEADERS += \
     src/ccviewer.h \
 src/ccdata.h \
     src/root.h \
-    src/classification.h
+    src/classification.h \
+    src/mainwindow.h
