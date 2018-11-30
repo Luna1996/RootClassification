@@ -18,7 +18,7 @@ struct CCData{
     ~CCData();
 
     static CCData* LoadPLYFile(QString path);
-    static int SaveCCData(QString path, CCData* data);
+    static int SaveCCData(QString path, CCData* ccdata);
 };
 
 #endif // CCDATA_H
