@@ -14,6 +14,7 @@
 [edgeContainingL]: #ecn
 [faceContaining]: #fc
 [faceContainingL]: #fcn
+[usedByEdges]: #ube
 
 | Name                               | Type      | Discription                                |
 | ---------------------------------- | --------- | ------------------------------------------ |
@@ -25,6 +26,7 @@
 | [edgeContainingL]<a id='ecn'></a> | int*    | An array in row i storing the number of indices of edges containing point i. |
 | [faceContaining]<a id='fc'></a> | int**    | An array in row i storing the indices of edges containing point i. |
 | [faceContainingL]<a id='fcn'></a> | int*    | An array in row i storing the number of indices of edges containing point i. |
+| [usedByEdges]<a id='ube'></a> | bool*    | An array of bool indicating whether a point is used by edges or faces. |
 
 ## Functions
 
@@ -52,6 +54,21 @@
 >   
 >   Automatically detect the number and position of junctions.
 
+[addOneToIntArray]:#aotia
+
+> <a id='aotia'></a>
+> **void [addOneToIntArray](int\*\* arr, int row, int length, int newValue)** 
+>   
+>   Add a newValue to arr[row] whose length is length
+> 
+> * *arr*  
+>   Int array 
+> * *row*  
+>   Row of target array
+> * *length*  
+>   The length of arr[row]
+> * *newValue*  
+>   New element need to insert.
 
 [updateContainings]:#updatecontaining
 
