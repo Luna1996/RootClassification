@@ -15,6 +15,7 @@ class Classification {
   int* edgeContainingL;
   int** faceContaining;
   int* faceContainingL;
+  int* usedByEdges;
 
   Classification(CCData* data);
   ~Classification();
