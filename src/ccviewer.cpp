@@ -51,6 +51,7 @@ void CCViewer::init() {
   glLineWidth(1);
   resizeGL();
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_CULL_FACE);
 
 #define TEST
 #ifdef TEST

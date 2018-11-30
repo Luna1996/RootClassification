@@ -46,16 +46,12 @@
 > * *return value*  
 >   Return the 0 pointer if succeed, non-zero otherwise.
 
-[extract1d]:#ext1d
+[flatten]:#flatten
 
-><a id='ext1d'></a>
-> **void\* [extract1d](int comp)**  
+><a id='flatten'></a>
+> **void\*\* [flatten]\()**  
 > 
-> Extract vertices, edges or faces as an 1d array.
-> 
-> * *comp*  
->   comp = 1: vertices;  
->   comp = 2: edges;  
->   comp = 3: faces;  
+> Extract vertices, edges and faces as an 1d array for OpenGL use.
+>   
 > * *return value*  
->   A void point representing a float or int array.
+>   Store three flattened array pointers in a void*[3] list [float*, int*, int*]

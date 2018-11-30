@@ -14,17 +14,20 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   Q_OBJECT
 
   CCData* raw;
-  void* result;
+  float* vetx;
+  int* edge;
+  int* face;
+  char* result;
   Root** roots;
 
   SP* prog;
   QMatrix4x4 projection;
-
   GLuint buf[4];
   GLuint vao;
 
  public:
   CCViewer();
+  void setRaw(CCData* raw);
 
  private:
   static SP* loadShaderProgram(QString urls[2]);
