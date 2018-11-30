@@ -116,33 +116,32 @@ int CCData::SaveCCData(QString path, CCData* cc){
     }
 }
 
-void* CCData::extract1d(int comp){
-    if(comp == 1){
-        float* ans = new float[(this->n1)*3];
-        for(int i = 0;i<this->n1;i++){
-            ans[3*i+0] = this->c1[i][2];
-            ans[3*i+1] = this->c1[i][3];
-            ans[3*i+2] = this->c1[i][4];
-        }
-        return ans;
+void** CCData::flatten(void){
+    void* ans[3];
+
+    float* ans1 = new float[(this->n1)*3];
+    for(int i = 0;i<this->n1;i++){
+        ans1[3*i+0] = this->c1[i][2];
+        ans1[3*i+1] = this->c1[i][3];
+        ans1[3*i+2] = this->c1[i][4];
     }
-    else if(comp == 2){
-        int* ans = new int[(this->n2)*2];
-        for(int i = 0;i<this->n2;i++){
-            ans[2*i+0] = this->c2[i][0];
-            ans[2*i+1] = this->c2[i][1];
-        }
-        return ans;
+
+    int* ans2 = new int[(this->n2)*2];
+    for(int i = 0;i<this->n2;i++){
+        ans2[2*i+0] = this->c2[i][0];
+        ans2[2*i+1] = this->c2[i][1];
     }
-    else{
-        int* ans = new int[(this->n3)*3];
-        for(int i = 0;i<this->n3;i++){
-            ans[3*i+0] = this->c3[i][0];
-            ans[3*i+1] = this->c3[i][1];
-            ans[3*i+2] = this->c3[i][2];
-        }
-        return ans;
+
+    int* ans3 = new int[(this->n3)*3];
+    for(int i = 0;i<this->n3;i++){
+        ans3[3*i+0] = this->c3[i][0];
+        ans3[3*i+1] = this->c3[i][1];
+        ans3[3*i+2] = this->c3[i][2];
     }
+    ans[0] = ans1;
+    ans[1] = ans2;
+    ans[2] = ans3;
+    return ans;
 }
 
 
