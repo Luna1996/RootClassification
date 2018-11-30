@@ -20,6 +20,7 @@ public:
     Classification(CCData* data);
     ~Classification();
 
+    void junctionAutoDetection (void);
     void updateContainings(void);
     void markInSpheres(void);
     void classify(void);

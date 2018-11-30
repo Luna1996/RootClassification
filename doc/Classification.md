@@ -45,6 +45,14 @@
 > <a id='nclassification'></a>
 > **[~Classification] (void)**   
 
+[junctionAutoDetection]:#jad
+
+> <a id='jad'></a>
+> **void [junctionAutoDetection] (void)** 
+>   
+>   Automatically detect the number and position of junctions.
+
+
 [updateContainings]:#updatecontaining
 
 > <a id='updatecontaining'></a>
