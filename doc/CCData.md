@@ -45,3 +45,17 @@
 >   Data.
 > * *return value*  
 >   Return the 0 pointer if succeed, non-zero otherwise.
+
+[extract1d]:#ext1d
+
+><a id='ext1d'></a>
+> **void\* [extract1d](int comp)**  
+> 
+> Extract vertices, edges or faces as an 1d array.
+> 
+> * *comp*  
+>   comp = 1: vertices;  
+>   comp = 2: edges;  
+>   comp = 3: faces;  
+> * *return value*  
+>   A void point representing a float or int array.

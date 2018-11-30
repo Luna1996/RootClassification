@@ -85,10 +85,65 @@ CCData* CCData::LoadPLYFile(QString path){
     return ans;
 }
 
-int CCData::SaveCCData(QString path, CCData* data){
-    return 0;
+int CCData::SaveCCData(QString path, CCData* cc){
+    QFile file(path);
+    if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+
+        QTextStream out(&file);
+
+        int nV = cc->n1;
+        int nE = cc->n2;
+        int nF = cc->n3;
+
+        QString header = QString("ply \nformat ascii 1.0 \nelement vertex %1\nproperty float32 bt2 \nproperty float32 radius \nproperty float32 x \nproperty float32 y \nproperty float32 z \nelement edge %2\nproperty int32 vertex1 \nproperty int32 vertex2 \nelement face %3\nproperty list uint8 int32 vertex_indices \nend_header \n").arg(nV).arg(nE).arg(nF);
+        out << header;
+
+        for(int i = 0;i<nV;i++){
+            out << cc->c1[i][0] << " " << cc->c1[i][1] << " " << cc->c1[i][2] << " " << cc->c1[i][3] << " " << cc->c1[i][4] << endl;
+        }
+
+        for(int i = 0;i<nE;i++){
+            out << cc->c2[i][0] << " " << cc->c2[i][1] << " " << endl;
+        }
+
+        for(int i = 0;i<nF;i++){
+            out << "3 " <<cc->c3[i][0] << " " << cc->c3[i][1] << " " << cc->c3[i][2] << " " << endl;
+        }
+        return 0;
+    }
+    else{
+        return 1;
+    }
 }
 
+void* CCData::extract1d(int comp){
+    if(comp == 1){
+        float* ans = new float[(this->n1)*3];
+        for(int i = 0;i<this->n1;i++){
+            ans[3*i+0] = this->c1[i][2];
+            ans[3*i+1] = this->c1[i][3];
+            ans[3*i+2] = this->c1[i][4];
+        }
+        return ans;
+    }
+    else if(comp == 2){
+        int* ans = new int[(this->n2)*2];
+        for(int i = 0;i<this->n2;i++){
+            ans[2*i+0] = this->c2[i][0];
+            ans[2*i+1] = this->c2[i][1];
+        }
+        return ans;
+    }
+    else{
+        int* ans = new int[(this->n3)*3];
+        for(int i = 0;i<this->n3;i++){
+            ans[3*i+0] = this->c3[i][0];
+            ans[3*i+1] = this->c3[i][1];
+            ans[3*i+2] = this->c3[i][2];
+        }
+        return ans;
+    }
+}
 
 
 
