@@ -19,9 +19,10 @@ class Classification {
   Classification(CCData* data);
   ~Classification();
 
-  void updateContainings(void);
-  void markInSpheres(void);
-  void classify(void);
+    void junctionAutoDetection (void);
+    void updateContainings(void);
+    void markInSpheres(void);
+    void classify(void);
 };
 
 #endif  // CLASSIFICATION_H
