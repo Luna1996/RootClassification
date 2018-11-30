@@ -1,9 +1,10 @@
 #ifndef ROOT_H
 #define ROOT_H
+#include <QVector3D>
 
 struct Sphere {
-  float pos[3];
-  float rgb[3];
+  QVector3D pos;
+  QVector3D rgb;
   float radius;
 };
 

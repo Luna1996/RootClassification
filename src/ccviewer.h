@@ -23,6 +23,8 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   struct {
     GLuint m, v, e, f;
   } vbo;
+  float distance;
+  QVector3D center, eye;
 
  public:
   CCViewer();

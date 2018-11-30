@@ -3,7 +3,12 @@
 #include <QTextStream>
 
 CCViewer::CCViewer()
-    : raw(nullptr), mark(nullptr), prog(nullptr), vao(0), vbo{0, 0, 0, 0} {
+    : raw(nullptr),
+      mark(nullptr),
+      prog(nullptr),
+      vao(0),
+      vbo{0, 0, 0, 0},
+      eye(1, 1, 1) {
   connect(this, &QQuickItem::windowChanged, this, &CCViewer::onWindowChanged);
   setFlag(QQuickItem::ItemHasContents);
 }
@@ -38,11 +43,10 @@ void CCViewer::resizeGL() {
   glViewport(int(x()), int(y()), int(w), int(h));
 
   float aspect = w / h;
-  const qreal zNear = 0, zFar = 100.0, fov = 70.0;
-  projection.setToIdentity();
-  projection.perspective(fov, aspect, zNear, zFar);
-  projection.lookAt(QVector3D(10, 10, 10), QVector3D(1, 1, 1),
-                    QVector3D(0, 1, 0));
+  float zNear = 0, zFar = distance, fov = 70.0;
+  P.setToIdentity();
+  P.perspective(fov, aspect, zNear, zFar);
+  P.lookAt(center, eye * distance, QVector3D(0, 1, 0));
 }
 
 void CCViewer::init() {
@@ -64,6 +68,9 @@ void CCViewer::init() {
 void CCViewer::setRaw(CCData* data) {
   raw = data;
   auto cc = data->flat;
+
+  center = raw->sphere->pos;
+  distance = raw->sphere->radius;
 
   prog->bind();
 
@@ -116,7 +123,7 @@ void CCViewer::paint() {
   prog->bind();
 
   resizeGL();
-  prog->setUniformValue(prog->uniformLocation("mvp"), projection);
+  prog->setUniformValue(prog->uniformLocation("mvp"), P);
 
   glBindVertexArray(vao);
 
