@@ -242,8 +242,8 @@ void Classification::classify(void) {
 
 void Classification::floodVerticesThroughEdgesFromSeed(uint seed){
     //start this seed point
-    QSet<uint> floodedThisEndPoint;
-    floodedThisEndPoint.insert(seed);
+    QSet<uint> floodedThisSeed;
+    floodedThisSeed.insert(seed);
 
     QList<uint> buffer;
     buffer.append(seed);
@@ -291,7 +291,7 @@ void Classification::floodVerticesThroughEdgesFromSeed(uint seed){
             if(!insideSphere){
                 if(!buffer.contains(value)){
                     buffer.append(value);
-                    floodedThisEndPoint.insert(value);
+                    floodedThisSeed.insert(value);
                 }
             }
         }
@@ -299,18 +299,18 @@ void Classification::floodVerticesThroughEdgesFromSeed(uint seed){
         buffer.removeFirst();
     }
     if(assignment == 3){
-        foreach(const uint &value, floodedThisEndPoint){
+        foreach(const uint &value, floodedThisSeed){
             this->mark[value] = 0;
         }
     }
     if(assignment == 4){
-        foreach(const uint &value, floodedThisEndPoint){
+        foreach(const uint &value, floodedThisSeed){
             this->mark[value] = 1;
         }
     }
     if(assignment == 5){
-        int nearest = this->nearestSphere(&floodedThisEndPoint);
-        foreach(const uint &value, floodedThisEndPoint){
+        int nearest = this->nearestSphere(&floodedThisSeed);
+        foreach(const uint &value, floodedThisSeed){
             this->mark[value] = char(nearest);
         }
     }
