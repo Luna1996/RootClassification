@@ -195,14 +195,234 @@ int Classification::markVerticesInJunctionSpheres(void){
     }
 }
 
+//void Classification::classify(void) {
+//  uint nV = this->ccdata->n1;
+//  uint hnV = nV / 2;
+//  for (uint i = 0; i < nV; i++) {
+//    if (i < hnV) {
+//      this->mark[i] = 0;
+//    } else {
+//      this->mark[i] = 1;
+//    }
+//  }
+//}
+
 void Classification::classify(void) {
+  // end points list
+  QList<uint> endPoints;
   uint nV = this->ccdata->n1;
-  uint hnV = nV / 2;
-  for (uint i = 0; i < nV; i++) {
-    if (i < hnV) {
-      this->mark[i] = 0;
-    } else {
-      this->mark[i] = 1;
-    }
+  for(uint i = 0;i<nV;i++){
+      if(this->usedByEdges[i] && (this->edgeContainingL[i] == 1) && this->mark[i] == 2){
+          endPoints.append(i);
+      }
   }
+  // emurate all end points
+  uint nep = uint(endPoints.size());
+  for(uint i = 0;i < nep;i++){
+
+    //start this end point
+    QSet<uint> floodedThisEndPoint;
+    floodedThisEndPoint.insert(endPoints.at(int(i)));
+
+    QList<uint> buffer;
+    buffer.append(endPoints.at(0));
+
+    int assignment = 2; // result of classification
+
+    while(!buffer.isEmpty()){
+        uint v = buffer.at(0);
+        int* contained = this->edgeContaining[v];
+        uint containedN = uint(this->edgeContainingL[v]);
+
+        QSet<uint> neighbors;
+        //insert all endpoints of related edges containing v to neighbor set
+        for(uint j = 0;j<containedN;j++){
+            uint edgeThisIndex = uint(contained[j]);
+            uint p1 = uint(this->ccdata->c2[edgeThisIndex][0]);
+            uint p2 = uint(this->ccdata->c2[edgeThisIndex][1]);
+            neighbors.insert(p1);
+            neighbors.insert(p2);
+        }
+        // add elements in set into buffer
+        foreach(const uint &value, neighbors){
+            bool insideSphere = false;
+            //check whether this point a in any sphere
+            QVector3D vp(this->ccdata->c1[value][2],this->ccdata->c1[value][3],this->ccdata->c1[value][4]);
+            // check sphere 1
+            if(Sphere::inThisSphere(this->junctions.at(0),vp)){
+                insideSphere = true;
+                if(assignment == 2){
+                    assignment = 3;
+                }else if(assignment == 4){
+                    assignment = 5;
+                }
+            }
+            // check sphere 2
+            if(Sphere::inThisSphere(this->junctions.at(1),vp)){
+                insideSphere = true;
+                if(assignment == 2){
+                    assignment = 4;
+                }else if(assignment == 3){
+                    assignment = 5;
+                }
+            }
+            // not in any sphere
+            if(!insideSphere){
+                if(!buffer.contains(value)){
+                    buffer.append(value);
+                    floodedThisEndPoint.insert(value);
+                }
+            }
+        }
+        //remove first element in buffer
+        buffer.removeFirst();
+    }
+    if(assignment == 3){
+        foreach(const uint &value, floodedThisEndPoint){
+            this->mark[value] = 0;
+        }
+    }
+    if(assignment == 4){
+        foreach(const uint &value, floodedThisEndPoint){
+            this->mark[value] = 1;
+        }
+    }
+    if(assignment == 5){
+        int nearest = this->nearestSphere(&floodedThisEndPoint);
+        foreach(const uint &value, floodedThisEndPoint){
+            this->mark[value] = char(nearest);
+        }
+    }
+
+    //finish this end point
+  }
+
+  // line segments with no end
+  while(true){
+      bool someVerticesNotClassified = false;
+      uint seed = 0;
+      for(uint i = 0;i<nV;i++){
+          if(this->mark[i] == 2){
+              someVerticesNotClassified = true;
+              seed = i;
+              break;
+          }
+      }
+      if(!someVerticesNotClassified){
+          break;
+      }
+
+      //start this seed point
+      QSet<uint> floodedThisEndPoint;
+      floodedThisEndPoint.insert(seed);
+
+      QList<uint> buffer;
+      buffer.append(seed);
+
+      int assignment = 2; // result of classification
+
+      while(!buffer.isEmpty()){
+          uint v = buffer.at(0);
+          int* contained = this->edgeContaining[v];
+          uint containedN = uint(this->edgeContainingL[v]);
+
+          QSet<uint> neighbors;
+          //insert all endpoints of related edges containing v to neighbor set
+          for(uint j = 0;j<containedN;j++){
+              uint edgeThisIndex = uint(contained[j]);
+              uint p1 = uint(this->ccdata->c2[edgeThisIndex][0]);
+              uint p2 = uint(this->ccdata->c2[edgeThisIndex][1]);
+              neighbors.insert(p1);
+              neighbors.insert(p2);
+          }
+          // add elements in set into buffer
+          foreach(const uint &value, neighbors){
+              bool insideSphere = false;
+              //check whether this point a in any sphere
+              QVector3D vp(this->ccdata->c1[value][2],this->ccdata->c1[value][3],this->ccdata->c1[value][4]);
+              // check sphere 1
+              if(Sphere::inThisSphere(this->junctions.at(0),vp)){
+                  insideSphere = true;
+                  if(assignment == 2){
+                      assignment = 3;
+                  }else if(assignment == 4){
+                      assignment = 5;
+                  }
+              }
+              // check sphere 2
+              if(Sphere::inThisSphere(this->junctions.at(1),vp)){
+                  insideSphere = true;
+                  if(assignment == 2){
+                      assignment = 4;
+                  }else if(assignment == 3){
+                      assignment = 5;
+                  }
+              }
+              // not in any sphere
+              if(!insideSphere){
+                  if(!buffer.contains(value)){
+                      buffer.append(value);
+                      floodedThisEndPoint.insert(value);
+                  }
+              }
+          }
+          //remove first element in buffer
+          buffer.removeFirst();
+      }
+      if(assignment == 3){
+          foreach(const uint &value, floodedThisEndPoint){
+              this->mark[value] = 0;
+          }
+      }
+      if(assignment == 4){
+          foreach(const uint &value, floodedThisEndPoint){
+              this->mark[value] = 1;
+          }
+      }
+      if(assignment == 5){
+          int nearest = this->nearestSphere(&floodedThisEndPoint);
+          foreach(const uint &value, floodedThisEndPoint){
+              this->mark[value] = char(nearest);
+          }
+      }
+
+      //finish this end point
+  }
+
+
 }
+
+int Classification::nearestSphere(QSet<uint>* set){
+    float xC = 0;
+    float yC = 0;
+    float zC = 0;
+    int np = (*set).size();
+    foreach(const uint &value, *set){
+        xC += this->ccdata->c1[value][2];
+        yC += this->ccdata->c1[value][3];
+        zC += this->ccdata->c1[value][4];
+    }
+    xC /= np;
+    yC /= np;
+    zC /= np;
+
+    QVector3D center(xC, yC, zC);
+    float d1 = this->junctions.at(0).pos.distanceToPoint(center);
+    float d2 = this->junctions.at(1).pos.distanceToPoint(center);
+
+    if(d1<d2){
+        return 0;
+    }
+    else{
+        return 1;
+    }
+}
+
+
+
+
+
+
+
+
+

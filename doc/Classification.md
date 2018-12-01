@@ -115,3 +115,15 @@
 >   A set of face indices
 > * *return value*  
 >   A sphere containing this junction
+
+[nearestSphere]:#ns
+> <a id='ns'></a>
+> **int [nearestSphere](QSet<uint>\* set)** 
+>   
+>   Given a set of points of a line segment, output the index of nearest junction.
+> 
+> * *set*  
+>   A set of point of a line segment.
+> * *return value*  
+>   0: junction 0;  
+>   1: junction 1.

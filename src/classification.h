@@ -28,6 +28,7 @@ class Classification {
     void updateContainings(void);
     int markVerticesInJunctionSpheres(void);
     void classify(void);
+    int nearestSphere(QSet<uint>* set);
 
 };
 
