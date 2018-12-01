@@ -28,8 +28,24 @@
 | [faceContainingL]<a id='fcn'></a> | int*    | An array in row i storing the number of indices of edges containing point i. |
 | [usedByEdges]<a id='ube'></a> | bool*    | An array of bool indicating whether a point is used by edges or faces. |
 
-## Functions
+## Static Functions
+[addOneToIntArray]:#aotia
 
+> <a id='aotia'></a>
+> **void [addOneToIntArray](int\*\* arr, int row, int length, int newValue)** 
+>   
+>   Add a newValue to arr[row] whose length is length
+> 
+> * *arr*  
+>   Int array 
+> * *row*  
+>   Row of target array
+> * *length*  
+>   The length of arr[row]
+> * *newValue*  
+>   New element need to insert.
+
+## Non-static Functions
 [Classification]:#classification
 
 > <a id='classification'></a>
@@ -54,21 +70,7 @@
 >   
 >   Automatically detect the number and position of junctions.
 
-[addOneToIntArray]:#aotia
 
-> <a id='aotia'></a>
-> **void [addOneToIntArray](int\*\* arr, int row, int length, int newValue)** 
->   
->   Add a newValue to arr[row] whose length is length
-> 
-> * *arr*  
->   Int array 
-> * *row*  
->   Row of target array
-> * *length*  
->   The length of arr[row]
-> * *newValue*  
->   New element need to insert.
 
 [updateContainings]:#updatecontaining
 
@@ -77,10 +79,10 @@
 > 
 > Update the indices of edges and faces containing point i and store them in members.
 
-[markInSpheres]:#mark-in-spheres
+[markVerticesInJunctionSpheres]:#mark-in-spheres
 
 ><a id='mark-in-spheres'></a>
-> **void [markInSpheres] (void)**  
+> **void [markVerticesInJunctionSpheres] (void)**  
 > 
 > Mark vertices in spheres to corresponding root.
 > 
@@ -92,3 +94,24 @@
 > 
 > Classify all points to one of the roots, 0 or 1.
 
+[centerOfAface]:#coaf
+> <a id='coaf'></a>
+> **float\* [centerOfAface](uint index)** 
+>   
+>   Given the index of a face, output the center of its three vertices.
+> 
+> * *index*  
+>   Index of given face 
+> * *return value*  
+>   a float array in form: [x, y, z]
+
+[faceSet2JunctionPosition]:#fs2jp
+> <a id='fs2jp'></a>
+> **Sphere [faceSet2JunctionPosition](QSet<uint>\* set)** 
+>   
+>   Given a set of indices of faces, output the sphere whose center is the center of all the faces in the set
+> 
+> * *set*  
+>   A set of face indices
+> * *return value*  
+>   A sphere containing this junction

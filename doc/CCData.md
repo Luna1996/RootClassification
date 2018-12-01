@@ -49,3 +49,12 @@
 >   Data.
 > * *return value*  
 >   Return the 0 pointer if succeed, non-zero otherwise.
+
+## Non-static Functions
+[flatten]:#flt
+
+><a id='flt'></a>
+> **void [flatten] (void)**  
+> 
+> Reshape vertices, edges and faces into 1d arrays.  
+> Calculate center and radius of this->sphere

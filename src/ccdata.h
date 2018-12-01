@@ -23,7 +23,6 @@ struct CCData {
   static CCData* LoadPLYFile(QString path);
   static int SaveCCData(QString path, CCData* data);
   void flatten(void);
-  void setSphere();
 };
 
 #endif  // CCDATA_H

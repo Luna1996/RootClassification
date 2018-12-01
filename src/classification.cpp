@@ -43,6 +43,42 @@ void Classification::addOneToIntArray(int** arr, int r, int n, int i) {
   arr[r] = newC;
 }
 
+float* Classification::centerOfAFace(uint index){
+    float* ans = new float[3];
+    float x = 0, y = 0, z = 0;
+    for(int i = 0;i<3;i++){
+        x += this->ccdata->c1[this->ccdata->c3[index][i]][2];
+        y += this->ccdata->c1[this->ccdata->c3[index][i]][3];
+        z += this->ccdata->c1[this->ccdata->c3[index][i]][4];
+    }
+    ans[0] = x/3;
+    ans[1] = y/3;
+    ans[2] = z/3;
+
+    return ans;
+}
+
+Sphere Classification::faceSet2JunctionPosition(QSet<uint>* set){
+    int n = (*set).size();
+    float sumX = 0;
+    float sumY = 0;
+    float sumZ = 0;
+    foreach(const uint &value, set){
+        sumX += centerOfAFace(value)[0];
+        sumY += centerOfAFace(value)[1];
+        sumZ += centerOfAFace(value)[2];
+    }
+    sumX /= n;
+    sumY /= n;
+    sumZ /= n;
+
+    Sphere ans;
+    ans.pos.setX(sumX);
+    ans.pos.setY(sumY);
+    ans.pos.setZ(sumZ);
+    return ans;
+}
+
 void Classification::junctionAutoDetection (void){
     bool f;
     uint seed = 0;
@@ -52,13 +88,19 @@ void Classification::junctionAutoDetection (void){
         flooded[i] = false;
     flooded[seed] = true;
     QList<uint>* buffer = new QList<uint>();
+
+    // do loop iterate until all faces are marked
     do{
         buffer->append(seed);
+        QSet<uint>* facesOfThisJunction = new QSet<uint>;
+        facesOfThisJunction->insert(seed);
+
+        // do loop flooding from seed
         do{
             QSet<uint> neighbors;
             uint pf = buffer->at(0); // index of first face in the buffer
             for(int i = 0;i<3;i++){
-                int v = this->ccdata->c3[pf][i]; //index of a vertex if face pf
+                int v = this->ccdata->c3[pf][i]; //index of a vertex of face pf
                 int k = this->faceContainingL[v];
                 for(int j = 0;j<k;j++){
                     neighbors.insert(uint(this->faceContaining[j]));
@@ -68,10 +110,17 @@ void Classification::junctionAutoDetection (void){
                 if(!buffer->contains(value)){
                     buffer->append(value);
                     flooded[value] = true;
+                    facesOfThisJunction->insert(value);
                 }
             }
+
             buffer->removeFirst();
+
         }while(!buffer->isEmpty());
+
+        Sphere thisJunction = faceSet2JunctionPosition(facesOfThisJunction);
+        this->junctions.append(thisJunction);
+        delete facesOfThisJunction;
 
         f = false;
         for(uint i = 0;i<nF;i++){
@@ -81,6 +130,7 @@ void Classification::junctionAutoDetection (void){
                 break;
             }
         }
+
     }while(f);
 
     delete buffer;

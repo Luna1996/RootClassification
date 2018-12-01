@@ -22,6 +22,8 @@ class Classification {
   ~Classification();
 
     static void addOneToIntArray(int** arr,int r, int n, int i);
+    float* centerOfAFace(uint index);
+    Sphere faceSet2JunctionPosition(QSet<uint>* set);
     void junctionAutoDetection (void);
     void updateContainings(void);
     int markVerticesInJunctionSpheres(void);
