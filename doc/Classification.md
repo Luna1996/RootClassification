@@ -126,4 +126,11 @@
 >   A set of point of a line segment.
 > * *return value*  
 >   0: junction 0;  
->   1: junction 1.
+>   1: junction 1.>   1: junction 1.
+
+[floodVerticesThroughEdgesFromSeed]:#fvtes
+> <a id='fvtes'></a>
+> **void [floodVerticesThroughEdgesFromSeed](uint seed)** 
+>   
+>   Mark all vertices that could be flooded from seed.
+>   The starting point of edges.

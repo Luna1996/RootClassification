@@ -29,6 +29,7 @@ class Classification {
     int markVerticesInJunctionSpheres(void);
     void classify(void);
     int nearestSphere(QSet<uint>* set);
+    void floodVerticesThroughEdgesFromSeed(uint seed);
 
 };
 
