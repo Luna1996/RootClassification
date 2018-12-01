@@ -1,14 +1,15 @@
 #ifndef CLASSIFICATION_H
 #define CLASSIFICATION_H
 
+#include <QSet>
 #include "ccdata.h"
 #include "root.h"
 
 class Classification {
  public:
   CCData* ccdata;
-  int numRootDetected = 0;
-  QList<Root> roots;
+  int numJunctionDetected = 0;
+  QList<Sphere> junctions;
   char* mark;
 
   int** edgeContaining;
@@ -23,7 +24,7 @@ class Classification {
     static void addOneToIntArray(int** arr,int r, int n, int i);
     void junctionAutoDetection (void);
     void updateContainings(void);
-    void markInSpheres(void);
+    int markVerticesInJunctionSpheres(void);
     void classify(void);
 
 };

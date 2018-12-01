@@ -120,13 +120,30 @@ int CCData::SaveCCData(QString path, CCData* cc) {
 
 void CCData::flatten() {
   void** ans = new void*[3];
+  float xMin = 20000.0;
+  float xMax = -20000.0;
+  float yMin = 20000.0;
+  float yMax = -20000.0;
+  float zMin = 20000.0;
+  float zMax = -20000.0;
 
   float* ans1 = new float[(this->n1) * 3];
-
   for (uint i = 0; i < this->n1; i++) {
     ans1[3 * i + 0] = this->c1[i][2];
+    if(ans1[3 * i + 0] > xMax)
+        xMax = ans1[3 * i + 0];
+    if(ans1[3 * i + 0] < xMin)
+        xMin = ans1[3 * i + 0];
     ans1[3 * i + 1] = this->c1[i][3];
+    if(ans1[3 * i + 1] > yMax)
+        yMax = ans1[3 * i + 1];
+    if(ans1[3 * i + 1] < yMin)
+        yMin = ans1[3 * i + 1];
     ans1[3 * i + 2] = this->c1[i][4];
+    if(ans1[3 * i + 2] > zMax)
+        zMax = ans1[3 * i + 2];
+    if(ans1[3 * i + 2] < zMin)
+        zMin = ans1[3 * i + 2];
   }
 
   int* ans2 = new int[(this->n2) * 2];
@@ -147,4 +164,19 @@ void CCData::flatten() {
   ans[2] = ans3;
 
   flat = ans;
+
+  float xC = (xMin + xMax)/2;
+  float yC = (yMin + yMax)/2;
+  float zC = (zMin + zMax)/2;
+
+  qreal xHW = qreal((xMax - xMin)/2);
+  qreal yHW = qreal((yMax - yMin)/2);
+  qreal zHW = qreal((zMax - zMin)/2);
+
+  qreal radius = qSqrt(xHW*xHW + yHW*yHW + zHW*zHW);
+
+  this->sphere->pos.setX(xC);
+  this->sphere->pos.setY(yC);
+  this->sphere->pos.setZ(zC);
+  this->sphere->radius = float(radius);
 }

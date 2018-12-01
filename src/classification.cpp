@@ -43,6 +43,50 @@ void Classification::addOneToIntArray(int** arr, int r, int n, int i) {
   arr[r] = newC;
 }
 
+void Classification::junctionAutoDetection (void){
+    bool f;
+    uint seed = 0;
+    uint nF = this->ccdata->n3;
+    bool* flooded = new bool[nF];
+    for(uint i = 0;i<nF;i++)
+        flooded[i] = false;
+    flooded[seed] = true;
+    QList<uint>* buffer = new QList<uint>();
+    do{
+        buffer->append(seed);
+        do{
+            QSet<uint> neighbors;
+            uint pf = buffer->at(0); // index of first face in the buffer
+            for(int i = 0;i<3;i++){
+                int v = this->ccdata->c3[pf][i]; //index of a vertex if face pf
+                int k = this->faceContainingL[v];
+                for(int j = 0;j<k;j++){
+                    neighbors.insert(uint(this->faceContaining[j]));
+                }
+            }
+            foreach(const uint &value, neighbors){
+                if(!buffer->contains(value)){
+                    buffer->append(value);
+                    flooded[value] = true;
+                }
+            }
+            buffer->removeFirst();
+        }while(!buffer->isEmpty());
+
+        f = false;
+        for(uint i = 0;i<nF;i++){
+            if(!flooded[i]){
+                f = true;
+                seed = i;
+                break;
+            }
+        }
+    }while(f);
+
+    delete buffer;
+    delete[] flooded;
+}
+
 void Classification::updateContainings(void) {
   uint nE = this->ccdata->n2;
   uint nF = this->ccdata->n3;
@@ -80,6 +124,25 @@ void Classification::updateContainings(void) {
     usedByEdges[face[1]] = false;
     usedByEdges[face[2]] = false;
   }
+}
+
+int Classification::markVerticesInJunctionSpheres(void){
+    if(this->junctions.size() == 2){
+        uint nV = this->ccdata->n1;
+        for(uint i = 0;i<nV;i++){
+            QVector3D p(this->ccdata->c1[i][2],this->ccdata->c1[i][3],this->ccdata->c1[i][4]);
+            if(Sphere::inThisSphere(this->junctions.at(0),p)){
+                this->mark[i] = 0;
+            }
+            if(Sphere::inThisSphere(this->junctions.at(1),p)){
+                this->mark[i] = 1;
+            }
+        }
+        return 0;
+    }
+    else{
+        return 1;
+    }
 }
 
 void Classification::classify(void) {
