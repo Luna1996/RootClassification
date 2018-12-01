@@ -153,8 +153,8 @@ void Classification::updateContainings(void) {
     /////////
     this->edgeContainingL[edge[0]]++;
     this->edgeContainingL[edge[1]]++;
-    usedByEdges[edge[0]] = true;
-    usedByEdges[edge[1]] = true;
+    this->usedByEdges[edge[0]] = true;
+    this->usedByEdges[edge[1]] = true;
   }
 
   for (int i = 0; i < int(nF); i++) {
@@ -170,9 +170,9 @@ void Classification::updateContainings(void) {
     this->faceContainingL[face[0]]++;
     this->faceContainingL[face[1]]++;
     this->faceContainingL[face[2]]++;
-    usedByEdges[face[0]] = false;
-    usedByEdges[face[1]] = false;
-    usedByEdges[face[2]] = false;
+    this->usedByEdges[face[0]] = false;
+    this->usedByEdges[face[1]] = false;
+    this->usedByEdges[face[2]] = false;
   }
 }
 
