@@ -73,6 +73,8 @@ CCData* CCData::LoadPLYFile(QString path) {
   ans->c2 = e;
   ans->c3 = f;
 
+  ans->sphere = new Sphere;
+
   ans->flatten();
 
   return ans;
