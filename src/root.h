@@ -7,8 +7,8 @@ struct Sphere {
   QVector3D rgb;
   float radius;
 
-  static bool inThisSphere(Sphere s, QVector3D p){
-      return s.pos.distanceToPoint(p)<=s.radius ? true : false;
+  static bool inThisSphere(Sphere s, QVector3D p) {
+    return s.pos.distanceToPoint(p) <= s.radius ? true : false;
   }
 };
 
