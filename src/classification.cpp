@@ -63,7 +63,7 @@ Sphere Classification::faceSet2JunctionPosition(QSet<uint>* set){
     float sumX = 0;
     float sumY = 0;
     float sumZ = 0;
-    foreach(const uint &value, set){
+    foreach(const uint &value, (*set)){
         sumX += centerOfAFace(value)[0];
         sumY += centerOfAFace(value)[1];
         sumZ += centerOfAFace(value)[2];
@@ -103,7 +103,7 @@ void Classification::junctionAutoDetection (void){
                 int v = this->ccdata->c3[pf][i]; //index of a vertex of face pf
                 int k = this->faceContainingL[v];
                 for(int j = 0;j<k;j++){
-                    neighbors.insert(uint(this->faceContaining[j]));
+                    neighbors.insert(uint(this->faceContaining[v][j]));
                 }
             }
             foreach(const uint &value, neighbors){
