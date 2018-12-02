@@ -6,11 +6,9 @@ CCViewer::CCViewer()
     : raw(nullptr),
       mark(nullptr),
       prog(nullptr),
-      eye(1, 1, 1),
-      vbo{new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer),
-          new QOpenGLBuffer(QOpenGLBuffer::VertexBuffer),
-          new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer),
-          new QOpenGLBuffer(QOpenGLBuffer::IndexBuffer)} {
+      vao(0),
+      vbo{0, 0, 0, 0},
+      eye(1, 1, 1) {
   connect(this, &QQuickItem::windowChanged, this, &CCViewer::onWindowChanged);
   setFlag(QQuickItem::ItemHasContents);
 }
@@ -45,7 +43,7 @@ void CCViewer::resizeGL() {
   glViewport(int(x()), int(y()), int(w), int(h));
 
   float aspect = w / h;
-  float zNear = 0, zFar = distance, fov = 120.0;
+  float zNear = 0, zFar = distance, fov = 70.0;
   P.setToIdentity();
   P.perspective(fov, aspect, zNear, zFar);
   P.lookAt(eye * distance, center, QVector3D(0, 1, 0));
@@ -53,19 +51,23 @@ void CCViewer::resizeGL() {
 
 void CCViewer::init() {
   initializeOpenGLFunctions();
-
-  vbo.m->create();
-  vbo.v->create();
-  vbo.e->create();
-  vbo.f->create();
-
   QString urls[2] = {":/src/cc.vert", ":/src/cc.frag"};
   prog = loadShaderProgram(urls);
+  prog->bindAttributeLocation("vertex", 0);
+  prog->bindAttributeLocation("vmark", 1);
+  prog->bind();
+
+  glGenVertexArrays(1, &vao);
+  GLuint buf[4];
+  glGenBuffers(4, buf);
+  vbo = {buf[0], buf[1], buf[2], buf[3]};
+
+  prog->release();
 }
 
 void CCViewer::setRaw(CCData* data) {
   raw = data;
-  auto cc = raw->flat;
+  auto cc = data->flat;
 
   center = raw->sphere->pos;
   distance = raw->sphere->radius;
@@ -73,11 +75,23 @@ void CCViewer::setRaw(CCData* data) {
   prog->bind();
 
   if (data) {
-    vbo.v->allocate(static_cast<float*>(cc[0]),
-                    int(raw->n1 * 3 * sizeof(float)));
-    vbo.e->allocate(static_cast<int*>(cc[1]), int(raw->n2 * 2 * sizeof(int)));
-    vbo.f->allocate(static_cast<int*>(cc[2]), int(raw->n3 * 3 * sizeof(int)));
-  }
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo.v);
+    glBufferData(GL_ARRAY_BUFFER, 3 * raw->n1 * int(sizeof(float)), cc[0],
+                 GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(0);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.e);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * raw->n2 * int(sizeof(int)), cc[1],
+                 GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.f);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * raw->n3 * int(sizeof(int)), cc[2],
+                 GL_STATIC_DRAW);
+  } else
+    glDisableVertexAttribArray(0);
+  update();
 }
 
 void CCViewer::setMark(char* m) {
@@ -87,32 +101,37 @@ void CCViewer::setMark(char* m) {
   prog->bind();
 
   if (m) {
-    vbo.m->allocate(mark, int(raw->n1));
-  }
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo.m);
+    glBufferData(GL_ARRAY_BUFFER, raw->n1 * int(sizeof(char)), m,
+                 GL_DYNAMIC_DRAW);
+    glVertexAttribPointer(1, 3, GL_UNSIGNED_BYTE, GL_FALSE, 0, nullptr);
+    glEnableVertexAttribArray(1);
+  } else
+    glDisableVertexAttribArray(1);
+  update();
 }
 
 void CCViewer::clean() {}
 
 void CCViewer::paint() {
   glClearColor(1, 1, 1, 0);
-  glClear(GL_COLOR_BUFFER_BIT);
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   if (!raw) return;
-  resizeGL();
 
   prog->bind();
 
+  resizeGL();
   prog->setUniformValue(prog->uniformLocation("mvp"), P);
 
-  int l1 = prog->attributeLocation("vertex");
-  vbo.v->bind();
-  prog->enableAttributeArray(l1);
-  glVertexAttribPointer(GLuint(l1), int(raw->n1 * 3 * sizeof(float)), GL_FLOAT,
-                        GL_FALSE, 0, nullptr);
+  glBindVertexArray(vao);
 
-  vbo.e->bind();
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.e);
   glDrawElements(GL_LINES, int(raw->n2) * 2, GL_UNSIGNED_INT, nullptr);
 
-  vbo.f->bind();
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.f);
   glDrawElements(GL_TRIANGLES, int(raw->n3) * 3, GL_UNSIGNED_INT, nullptr);
+
+  window()->resetOpenGLState();
 }
