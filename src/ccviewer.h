@@ -1,6 +1,7 @@
 #ifndef CCVIEWER_H
 #define CCVIEWER_H
 #include <QMatrix4x4>
+#include <QOpenGLBuffer>
 #include <QOpenGLFunctions_3_0>
 #include <QOpenGLShaderProgram>
 #include <QQuickItem>
@@ -18,13 +19,12 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   char* mark;
 
   SP* prog;
-  QMatrix4x4 P;
-  GLuint vao;
-  struct {
-    GLuint m, v, e, f;
-  } vbo;
   float distance;
   QVector3D center, eye;
+  QMatrix4x4 P;
+  struct {
+    QOpenGLBuffer *m, *v, *e, *f;
+  } vbo;
 
  public:
   CCViewer();
