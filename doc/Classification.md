@@ -136,3 +136,12 @@
 > 
 > * *seed*  
 >   The starting point of edges.
+
+[setJunctionRadius]:#sjr
+> <a id='sjr'></a>
+> **void [setJunctionRadius](float r)** 
+>   
+>   If there are right two junctions, set there radius d*r, where d is the distance between two junctions.
+> 
+> * *r*  
+>   The ratio parameter: r = radius/d

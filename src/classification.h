@@ -4,6 +4,7 @@
 #include <QSet>
 #include "ccdata.h"
 #include "root.h"
+#include <QDebug>
 
 class Classification {
  public:
@@ -21,15 +22,17 @@ class Classification {
   Classification(CCData* data);
   ~Classification();
 
-    static void addOneToIntArray(int** arr,int r, int n, int i);
-    float* centerOfAFace(uint index);
-    Sphere faceSet2JunctionPosition(QSet<uint>* set);
-    void junctionAutoDetection (void);
-    void updateContainings(void);
-    int markVerticesInJunctionSpheres(void);
-    void classify(void);
-    int nearestSphere(QSet<uint>* set);
-    void floodVerticesThroughEdgesFromSeed(uint seed);
+  void updateContainings(void); // 1
+  void junctionAutoDetection (void); // 2
+  int markVerticesInJunctionSpheres(void); // 3
+  void setJunctionRadius(float r); // 4
+  void classify(void); // 5
+  static void addOneToIntArray(int** arr,int r, int n, int i);
+  float* centerOfAFace(uint index);
+  Sphere faceSet2JunctionPosition(QSet<uint>* set);
+  int nearestSphere(QSet<uint>* set);
+  void floodVerticesThroughEdgesFromSeed(uint seed);
+
 
 };
 

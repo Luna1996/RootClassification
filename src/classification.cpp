@@ -39,7 +39,9 @@ void Classification::addOneToIntArray(int** arr, int r, int n, int i) {
     newC[j] = arr[r][j];
   }
   newC[n] = i;
-  delete[] arr[r];
+  if(n != 0){
+      delete[] arr[r];
+  }
   arr[r] = newC;
 }
 
@@ -86,11 +88,11 @@ void Classification::junctionAutoDetection (void){
     bool* flooded = new bool[nF];
     for(uint i = 0;i<nF;i++)
         flooded[i] = false;
-    flooded[seed] = true;
     QList<uint>* buffer = new QList<uint>();
 
     // do loop iterate until all faces are marked
     do{
+        flooded[seed] = true;
         buffer->append(seed);
         QSet<uint>* facesOfThisJunction = new QSet<uint>;
         facesOfThisJunction->insert(seed);
@@ -107,7 +109,7 @@ void Classification::junctionAutoDetection (void){
                 }
             }
             foreach(const uint &value, neighbors){
-                if(!buffer->contains(value)){
+                if(!buffer->contains(value) && !flooded[value]){
                     buffer->append(value);
                     flooded[value] = true;
                     facesOfThisJunction->insert(value);
@@ -289,7 +291,7 @@ void Classification::floodVerticesThroughEdgesFromSeed(uint seed){
             }
             // not in any sphere
             if(!insideSphere){
-                if(!buffer.contains(value)){
+                if(!buffer.contains(value) && !floodedThisSeed.contains(value)){
                     buffer.append(value);
                     floodedThisSeed.insert(value);
                 }
@@ -308,7 +310,7 @@ void Classification::floodVerticesThroughEdgesFromSeed(uint seed){
             this->mark[value] = 1;
         }
     }
-    if(assignment == 5){
+    if(assignment == 2 || assignment == 5){
         int nearest = this->nearestSphere(&floodedThisSeed);
         foreach(const uint &value, floodedThisSeed){
             this->mark[value] = char(nearest);
@@ -344,6 +346,21 @@ int Classification::nearestSphere(QSet<uint>* set){
     }
 }
 
+void Classification::setJunctionRadius(float r){
+    if(this->junctions.size() == 2){
+        Sphere j1 = junctions.at(0);
+        Sphere j2 = junctions.at(1);
+        float d = j1.pos.distanceToPoint(j2.pos);
+        j1.radius = d*r;
+        j2.radius = d*r;
+        this->junctions.clear();
+        this->junctions.append(j1);
+        this->junctions.append(j2);
+    }
+    else{
+        qDebug() << "Illegal number of junction:" << this->junctions.size();
+    }
+}
 
 
 
