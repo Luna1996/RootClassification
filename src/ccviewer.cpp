@@ -43,9 +43,9 @@ void CCViewer::bondProjection() {
 
 void CCViewer::bondView() {
   V.setToIdentity();
-  V.lookAt(center + QVector3D(sin(eye[0] * PI / 180) * cos(eye[1] * PI / 180),
+  V.lookAt(center + QVector3D(sin(eye[1] * PI / 180),
                               cos(eye[0] * PI / 180) * cos(eye[1] * PI / 180),
-                              sin(eye[1] * PI / 180)) *
+                              sin(eye[0] * PI / 180) * cos(eye[1] * PI / 180)) *
                         distance,
            center, QVector3D(1, 0, 0));
 

@@ -35,14 +35,15 @@ RCWindow {
 					mouse.accepted = true
 					switch (mouse.buttons) {
 					case Qt.LeftButton:
-						var a1 = parent.a1 + (mouse.y - old_y) / 2
-						if (a1 > 89)
-							parent.a1 = 89
-						else if (a1 < -89)
-							parent.a1 = -89
+						parent.a1 = (parent.a1 + (mouse.x - old_x) / 2) % 360
+
+						var a2 = parent.a2 + (mouse.y - old_y) / 2
+						if (a2 > 89)
+							parent.a2 = 89
+						else if (a2 < -89)
+							parent.a2 = -89
 						else
-							parent.a1 = a1
-						parent.a2 = (parent.a2 + (mouse.x - old_x) / 2) % 360
+							parent.a2 = a2
 						break
 					case Qt.RightButton:
 						break
