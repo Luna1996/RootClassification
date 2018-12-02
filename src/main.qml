@@ -51,8 +51,12 @@ RCWindow {
 					old_y = mouse.y
 				}
 				onPressed: {
+					parent.show_center = true
 					old_x = mouse.x
 					old_y = mouse.y
+				}
+				onReleased: {
+					parent.show_center = false
 				}
 			}
 		}

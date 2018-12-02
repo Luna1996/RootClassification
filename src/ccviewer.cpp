@@ -44,8 +44,8 @@ void CCViewer::bondProjection() {
 void CCViewer::bondView() {
   V.setToIdentity();
   V.lookAt(center + QVector3D(sin(eye[0] * PI / 180) * cos(eye[1] * PI / 180),
-                              sin(eye[1] * PI / 180),
-                              cos(eye[0] * PI / 180) * cos(eye[1] * PI / 180)) *
+                              cos(eye[0] * PI / 180) * cos(eye[1] * PI / 180),
+                              sin(eye[1] * PI / 180)) *
                         distance,
            center, QVector3D(1, 0, 0));
 
@@ -87,12 +87,6 @@ void CCViewer::setRaw(CCData* data) {
 
   center = raw->sphere->pos;
   distance = raw->sphere->radius;
-
-  //  raw = new CCData;
-  //  raw->n1 = 4;
-  //  raw->n2 = 4;
-  //  cc[0] = new float[12]{0, 0, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0};
-  //  cc[1] = new int[8]{0, 1, 1, 2, 2, 3, 3, 0};
 
   prog->bind();
 
@@ -158,6 +152,22 @@ void CCViewer::paint() {
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.f);
   glDrawElements(GL_TRIANGLES, int(raw->n3) * 3, GL_UNSIGNED_INT, nullptr);
+
+  //  prog->release();
+  if (show_center) {
+    glPointSize(3);
+    glBegin(GL_LINES);
+    glVertexAttribI1i(1, 0);
+    glVertex3f(center[0], center[1], center[2]);
+    glVertex3f(center[0] + 20, center[1], center[2]);
+    glVertexAttribI1i(1, 1);
+    glVertex3f(center[0], center[1], center[2]);
+    glVertex3f(center[0], center[1] + 20, center[2]);
+    glVertexAttribI1i(1, 2);
+    glVertex3f(center[0], center[1], center[2]);
+    glVertex3f(center[0], center[1], center[2] + 20);
+    glEnd();
+  }
 
   window()->resetOpenGLState();
 }

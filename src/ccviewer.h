@@ -15,6 +15,7 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   Q_PROPERTY(qreal d READ d WRITE setD)
   Q_PROPERTY(qreal a1 READ a1 WRITE setA1)
   Q_PROPERTY(qreal a2 READ a2 WRITE setA2)
+  Q_PROPERTY(bool show_center READ isShowCenter WRITE setShowCenter)
 
   Root** roots;
   CCData* raw;
@@ -29,6 +30,7 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   float distance;
   QVector3D center;
   QVector2D eye;
+  bool show_center;
 
  public:
   CCViewer();
@@ -50,6 +52,12 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   void setA2(float a2) {
     eye[1] = a2;
     bondView();
+  }
+
+  bool isShowCenter() const { return show_center; }
+  void setShowCenter(bool sc) {
+    show_center = sc;
+    window()->update();
   }
 
  private:
