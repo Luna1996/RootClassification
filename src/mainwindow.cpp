@@ -5,14 +5,16 @@
 MainWindow::MainWindow(QWindow* p) : QQuickWindow(p), current(nullptr) {
   connect(this, &QQuickWindow::beforeRendering, this, &MainWindow::init,
           Qt::DirectConnection);
-  current = CCData::LoadPLYFile(":/dat/2.ply");
+  current = CCData::LoadPLYFile(":/dat/3.ply");
+  current->flatten();
   cls = new Classification(current);
   cls->updateContainings();
   cls->junctionAutoDetection();
   for(int i = 0;i<this->cls->junctions.size();i++)
   qDebug() << cls->junctions[i].pos;
 
-  cls->junctions.removeAt(2);
+  cls->junctions.removeAt(0);
+  cls->junctions.removeAt(0);
   cls->setJunctionRadius(0.25);
   cls->markVerticesInJunctionSpheres();
   cls->classify();

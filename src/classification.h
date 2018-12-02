@@ -15,8 +15,10 @@ class Classification {
 
   int** edgeContaining;
   int* edgeContainingL;
+  int* edgeContainingLA;
   int** faceContaining;
   int* faceContainingL;
+  int* faceContainingLA;
   bool* usedByEdges;
 
   Classification(CCData* data);
@@ -27,7 +29,7 @@ class Classification {
   int markVerticesInJunctionSpheres(void); // 3
   void setJunctionRadius(float r); // 4
   void classify(void); // 5
-  static void addOneToIntArray(int** arr,int r, int n, int i);
+  static int addOneToIntArray(int** arr,int row, int noA, int noV, int i);
   float* centerOfAFace(uint index);
   Sphere faceSet2JunctionPosition(QSet<uint>* set);
   int nearestSphere(QSet<uint>* set);

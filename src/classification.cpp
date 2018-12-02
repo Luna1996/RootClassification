@@ -12,12 +12,16 @@ Classification::Classification(CCData* data) {
 
   this->edgeContaining = new int*[nV];
   this->edgeContainingL = new int[nV];
+  this->edgeContainingLA = new int[nV];
   this->faceContaining = new int*[nV];
   this->faceContainingL = new int[nV];
+  this->faceContainingLA = new int[nV];
   this->usedByEdges = new bool[nV];
   for (uint i = 0; i < nV; i++) {
     this->edgeContainingL[i] = 0;
     this->faceContainingL[i] = 0;
+    this->edgeContainingLA[i] = 0;
+    this->faceContainingLA[i] = 0;
     this->usedByEdges[i] = true;
   }
 }
@@ -30,19 +34,43 @@ Classification::~Classification() {
   }
   delete[] this->edgeContainingL;
   delete[] this->faceContainingL;
+  delete[] this->edgeContainingLA;
+  delete[] this->faceContainingLA;
   delete[] this->usedByEdges;
 }
 
-void Classification::addOneToIntArray(int** arr, int r, int n, int i) {
-  int* newC = new int[uint(n) + 1];
-  for (int j = 0; j < n; j++) {
-    newC[j] = arr[r][j];
-  }
-  newC[n] = i;
-  if(n != 0){
-      delete[] arr[r];
-  }
-  arr[r] = newC;
+int Classification::addOneToIntArray(int** arr, int row, int noA, int noV, int i) {
+    if(noA == 0){
+        int* newC = new int[1];
+        newC[0] = i;
+        arr[row] = newC;
+        return 1;
+    }
+    else{
+        if(noV < noA){
+            arr[row][noV] = i;
+            return noA;
+        }
+        else{
+            int* newC = new int[uint(noA*2)];
+            for (int j = 0; j < noV; j++) {
+                newC[j] = arr[row][j];
+            }
+            newC[noV] = i;
+            delete[] arr[row];
+            arr[row] = newC;
+            return noA*2;
+        }
+    }
+//  int* newC = new int[uint(n) + 1];
+//  for (int j = 0; j < n; j++) {
+//    newC[j] = arr[row][j];
+//  }
+//  newC[n] = i;
+//  if(n != 0){
+//      delete[] arr[row];
+//  }
+//  arr[r] = newC;
 }
 
 float* Classification::centerOfAFace(uint index){
@@ -144,14 +172,20 @@ void Classification::updateContainings(void) {
   uint nF = this->ccdata->n3;
 
   for (int i = 0; i < int(nE); i++) {
+//      qDebug("%d",i);
     // edge contains indices of two end points [p1 p2]
     int* edge = this->ccdata->c2[i];
     // p1n: edge count of p1
     int p1n = this->edgeContainingL[edge[0]];
     int p2n = this->edgeContainingL[edge[1]];
+    int p1nA = this->edgeContainingLA[edge[0]];
+    int p2nA = this->edgeContainingLA[edge[1]];
     /////////
-    addOneToIntArray(edgeContaining, edge[0], p1n, i);
-    addOneToIntArray(edgeContaining, edge[1], p2n, i);
+    this->edgeContainingLA[edge[0]] =  addOneToIntArray(edgeContaining, edge[0], p1nA, p1n, i);
+    this->edgeContainingLA[edge[1]] = addOneToIntArray(edgeContaining, edge[1], p2nA, p2n, i);
+    /////////
+//    edgeContaining[edge[0]][p1n] = i;
+//    edgeContaining[edge[1]][p2n] = i;
     /////////
     this->edgeContainingL[edge[0]]++;
     this->edgeContainingL[edge[1]]++;
@@ -160,14 +194,22 @@ void Classification::updateContainings(void) {
   }
 
   for (int i = 0; i < int(nF); i++) {
+//      qDebug("%d",i);
     int* face = this->ccdata->c3[i];
     int p1n = this->faceContainingL[face[0]];
     int p2n = this->faceContainingL[face[1]];
     int p3n = this->faceContainingL[face[2]];
+    int p1nA = this->faceContainingLA[face[0]];
+    int p2nA = this->faceContainingLA[face[1]];
+    int p3nA = this->faceContainingLA[face[2]];
     /////////
-    addOneToIntArray(faceContaining, face[0], p1n, i);
-    addOneToIntArray(faceContaining, face[1], p2n, i);
-    addOneToIntArray(faceContaining, face[2], p3n, i);
+    this->faceContainingLA[face[0]] = addOneToIntArray(faceContaining, face[0], p1nA, p1n, i);
+    this->faceContainingLA[face[1]] = addOneToIntArray(faceContaining, face[1], p2nA, p2n, i);
+    this->faceContainingLA[face[2]] = addOneToIntArray(faceContaining, face[2], p3nA, p3n, i);
+    /////////
+//    faceContaining[face[0]][p1n] = i;
+//    faceContaining[face[1]][p2n] = i;
+//    faceContaining[face[2]][p3n] = i;
     /////////
     this->faceContainingL[face[0]]++;
     this->faceContainingL[face[1]]++;

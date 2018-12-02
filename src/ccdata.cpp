@@ -26,13 +26,13 @@ CCData* CCData::LoadPLYFile(QString path) {
   }
 
   // extract number of vertex
-  numV = uint(header[2].split(" ").at(2).toInt());
+  numV = uint(header[2].split(" ", QString::SkipEmptyParts).at(2).toInt());
 
   // extract number of edge
-  numE = uint(header[8].split(" ").at(2).toInt());
+  numE = uint(header[8].split(" ", QString::SkipEmptyParts).at(2).toInt());
 
   // extract number of face
-  numF = uint(header[11].split(" ").at(2).toInt());
+  numF = uint(header[11].split(" ", QString::SkipEmptyParts).at(2).toInt());
 
   float** v = new float*[numV];
   int** e = new int*[numE];
@@ -40,7 +40,7 @@ CCData* CCData::LoadPLYFile(QString path) {
 
   // v
   for (uint i = 0; i < numV; i++) {
-    QStringList vL = in.readLine().split(" ");
+    QStringList vL = in.readLine().split(" ", QString::SkipEmptyParts);
     v[i] = new float[nfV];
     for (int j = 0; j < int(nfV); j++) {
       v[i][j] = vL.at(j).toFloat();
@@ -48,7 +48,7 @@ CCData* CCData::LoadPLYFile(QString path) {
   }
   // e
   for (uint i = 0; i < numE; i++) {
-    QStringList eL = in.readLine().split(" ");
+    QStringList eL = in.readLine().split(" ", QString::SkipEmptyParts);
     e[i] = new int[nfE];
     for (int j = 0; j < int(nfE); j++) {
       e[i][j] = eL.at(j).toInt();
@@ -57,7 +57,7 @@ CCData* CCData::LoadPLYFile(QString path) {
 
   // f
   for (uint i = 0; i < numF; i++) {
-    QStringList fL = in.readLine().split(" ");
+    QStringList fL = in.readLine().split(" ", QString::SkipEmptyParts);
     f[i] = new int[nfF - 1];
     for (int j = 1; j < int(nfF); j++) {
       // effective data start from second field
