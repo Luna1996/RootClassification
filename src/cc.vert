@@ -1,10 +1,13 @@
+#version 440
+
 uniform mat4 mvp;
 
-in vec3 vertex;
+in vec4 vertex;
 in int vmark;
-varying int mark;
+flat out int mark;
 
 void main(){
 	mark=vmark;
-	gl_Position	 = mvp*vec4(vertex,1);
+	vec4 temp = mvp*vertex;
+	gl_Position	= temp;
 }

@@ -3,11 +3,13 @@
 #include <QQuickWindow>
 #include <QWindow>
 #include "ccviewer.h"
+#include "classification.h"
 
 class MainWindow : public QQuickWindow {
   Q_OBJECT
 
   CCData* current;
+  Classification* cls;
   CCViewer* viewer;
 
  public:
