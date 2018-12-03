@@ -11,7 +11,8 @@ CCViewer::CCViewer()
       vao(0),
       vbo{0, 0, 0, 0},
       distance(0),
-      eye(0, 0) {
+      eye(0, 0),
+      show_center(false) {
   connect(this, &QQuickItem::windowChanged, this, &CCViewer::onWindowChanged);
   setFlag(QQuickItem::ItemHasContents);
 }
@@ -48,8 +49,6 @@ void CCViewer::bondView() {
                               sin(eye[0] * PI / 180) * cos(eye[1] * PI / 180)) *
                         distance,
            center, QVector3D(1, 0, 0));
-
-  window()->update();
 }
 
 void CCViewer::onWindowChanged(QQuickWindow* win) {
@@ -83,14 +82,23 @@ void CCViewer::init() {
 
 void CCViewer::setRaw(CCData* data) {
   raw = data;
-  auto cc = data->flat;
+  connect(window(), &QQuickWindow::beforeRendering, this, &CCViewer::_setRaw,
+          Qt::DirectConnection);
+  reconnectPaint();
+  window()->update();
+}
+
+void CCViewer::_setRaw() {
+  disconnect(window(), &QQuickWindow::beforeRendering, this,
+             &CCViewer::_setRaw);
+  auto cc = raw->flat;
 
   center = raw->sphere->pos;
   distance = raw->sphere->radius;
 
   prog->bind();
 
-  if (data) {
+  if (raw) {
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo.v);
     glBufferData(GL_ARRAY_BUFFER, 3 * raw->n1 * int(sizeof(float)), cc[0],
@@ -114,18 +122,25 @@ void CCViewer::setRaw(CCData* data) {
 void CCViewer::setMark(char* m) {
   if (!raw) return;
   mark = m;
+  connect(window(), &QQuickWindow::beforeRendering, this, &CCViewer::_setMark,
+          Qt::DirectConnection);
+  reconnectPaint();
+  window()->update();
+}
 
+void CCViewer::_setMark() {
+  disconnect(window(), &QQuickWindow::beforeRendering, this,
+             &CCViewer::_setMark);
   prog->bind();
 
-  if (m) {
+  if (mark) {
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo.m);
-    glBufferData(GL_ARRAY_BUFFER, raw->n1, m, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, raw->n1, mark, GL_DYNAMIC_DRAW);
     glVertexAttribIPointer(1, 1, GL_BYTE, 0, nullptr);
     glEnableVertexAttribArray(1);
   } else
     glDisableVertexAttribArray(1);
-  window()->update();
 }
 
 void CCViewer::clean() {}

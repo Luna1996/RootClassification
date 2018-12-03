@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>src/main.qml</file>
+        <file>qml/main.qml</file>
         <file>src/cc.frag</file>
         <file>src/cc.vert</file>
         <file>dat/1.ply</file>
@@ -9,5 +9,11 @@
         <file>dat/4.ply</file>
         <file>dat/5.ply</file>
         <file>dat/0.ply</file>
+        <file>img/folder-open.png</file>
+        <file>img/plus.png</file>
+        <file>img/refresh.png</file>
+        <file>qml/components/IconButton.qml</file>
+        <file>qml/components/Title.qml</file>
+        <file>img/delete.png</file>
     </qresource>
 </RCC>

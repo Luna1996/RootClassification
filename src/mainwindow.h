@@ -8,12 +8,12 @@
 class MainWindow : public QQuickWindow {
   Q_OBJECT
 
-  CCData* current;
   Classification* cls;
   CCViewer* viewer;
 
  public:
   MainWindow(QWindow* p = nullptr);
+  Q_INVOKABLE void setData(const QString& url);
 
  private slots:
   void init();

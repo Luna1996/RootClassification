@@ -32,6 +32,10 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   QVector2D eye;
   bool show_center;
 
+private:
+  void _setRaw();
+  void _setMark();
+
  public:
   CCViewer();
   void setRaw(CCData* raw);
@@ -41,6 +45,7 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   void setD(float d) {
     distance = d;
     bondView();
+    window()->update();
   }
 
   float a1() const { return eye[0]; }
@@ -48,10 +53,12 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   void setA1(float a1) {
     eye[0] = a1;
     bondView();
+    window()->update();
   }
   void setA2(float a2) {
     eye[1] = a2;
     bondView();
+    window()->update();
   }
 
   bool isShowCenter() const { return show_center; }
@@ -64,6 +71,12 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   static SP* loadShaderProgram(QString urls[2]);
   void bondProjection();
   void bondView();
+  void reconnectPaint() {
+    disconnect(window(), &QQuickWindow::beforeRendering, this,
+               &CCViewer::paint);
+    connect(window(), &QQuickWindow::beforeRendering, this, &CCViewer::paint,
+            Qt::DirectConnection);
+  }
 
  private slots:
   void onWindowChanged(QQuickWindow* win);
