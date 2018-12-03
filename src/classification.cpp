@@ -3,12 +3,16 @@
 Classification::Classification(CCData* data) {
   this->ccdata = data;
 
-  this->mark = new char[this->ccdata->n1];
+
 
   uint nV = this->ccdata->n1;
+  uint nF = this->ccdata->n3;
   for (uint i = 0; i < nV; i++) {
     this->mark[i] = 2;
   }
+
+  this->mark = new char[nV];
+  this->isBreakP = new bool[nV];
 
   this->edgeContaining = new int*[nV];
   this->edgeContainingL = new int[nV];
@@ -17,6 +21,9 @@ Classification::Classification(CCData* data) {
   this->faceContainingL = new int[nV];
   this->faceContainingLA = new int[nV];
   this->usedByEdges = new bool[nV];
+
+  this->faceJunctionMark = new int[nF];
+
   for (uint i = 0; i < nV; i++) {
     this->edgeContainingL[i] = 0;
     this->faceContainingL[i] = 0;
@@ -118,6 +125,7 @@ void Classification::junctionAutoDetection (void){
         flooded[i] = false;
     QList<uint>* buffer = new QList<uint>();
 
+    int junctionCount = 0;
     // do loop iterate until all faces are marked
     do{
         flooded[seed] = true;
@@ -150,6 +158,13 @@ void Classification::junctionAutoDetection (void){
 
         Sphere thisJunction = faceSet2JunctionPosition(facesOfThisJunction);
         this->junctions.append(thisJunction);
+
+        //mark face of this junction in faceJunctionMark
+        foreach(const uint &value, facesOfThisJunction){
+            this->faceJunctionMark[value] = junctionCount;
+        }
+        junctionCount ++;
+
         delete facesOfThisJunction;
 
         f = false;
@@ -305,8 +320,10 @@ void Classification::floodVerticesThroughEdgesFromSeed(uint seed){
             uint edgeThisIndex = uint(contained[j]);
             uint p1 = uint(this->ccdata->c2[edgeThisIndex][0]);
             uint p2 = uint(this->ccdata->c2[edgeThisIndex][1]);
-            neighbors.insert(p1);
-            neighbors.insert(p2);
+            if(!this->isBreakP[p1])
+                neighbors.insert(p1);
+            if(!this->isBreakP[p2])
+                neighbors.insert(p2);
         }
         // add elements in set into buffer
         foreach(const uint &value, neighbors){
@@ -402,6 +419,12 @@ void Classification::setJunctionRadius(float r){
     else{
         qDebug() << "Illegal number of junction:" << this->junctions.size();
     }
+}
+
+void Classification::setBreakPoints(QList<uint> *brks){
+    QList<uint>::iterator i;
+    for (i = brks->begin(); i != brks->end(); ++i)
+       this->isBreakP[*i] = true;
 }
 
 

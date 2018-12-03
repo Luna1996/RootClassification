@@ -12,6 +12,7 @@ class Classification {
   int numJunctionDetected = 0;
   QList<Sphere> junctions;
   char* mark;
+  bool* isBreakP;
 
   int** edgeContaining;
   int* edgeContainingL;
@@ -20,6 +21,8 @@ class Classification {
   int* faceContainingL;
   int* faceContainingLA;
   bool* usedByEdges;
+
+  int* faceJunctionMark;
 
   Classification(CCData* data);
   ~Classification();
@@ -34,6 +37,7 @@ class Classification {
   Sphere faceSet2JunctionPosition(QSet<uint>* set);
   int nearestSphere(QSet<uint>* set);
   void floodVerticesThroughEdgesFromSeed(uint seed);
+  void setBreakPoints(QList<uint> *brks);
 
 
 };
