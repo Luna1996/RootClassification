@@ -3,8 +3,6 @@
 Classification::Classification(CCData* data) {
   this->ccdata = data;
 
-
-
   uint nV = this->ccdata->n1;
   uint nF = this->ccdata->n3;
   this->mark = new char[nV];
@@ -29,6 +27,14 @@ Classification::Classification(CCData* data) {
     this->usedByEdges[i] = true;
     this->isBreakP[i] = false;
   }
+}
+void Classification::reset(void){
+    uint nV = this->ccdata->n1;
+    for (uint i = 0; i < nV; i++) {
+      this->mark[i] = 2;
+      this->isBreakP[i] = false;
+    }
+    this->junctions.clear();
 }
 
 Classification::~Classification() {
