@@ -7,10 +7,6 @@ Classification::Classification(CCData* data) {
 
   uint nV = this->ccdata->n1;
   uint nF = this->ccdata->n3;
-  for (uint i = 0; i < nV; i++) {
-    this->mark[i] = 2;
-  }
-
   this->mark = new char[nV];
   this->isBreakP = new bool[nV];
 
@@ -25,11 +21,13 @@ Classification::Classification(CCData* data) {
   this->faceJunctionMark = new int[nF];
 
   for (uint i = 0; i < nV; i++) {
+    this->mark[i] = 2;
     this->edgeContainingL[i] = 0;
     this->faceContainingL[i] = 0;
     this->edgeContainingLA[i] = 0;
     this->faceContainingLA[i] = 0;
     this->usedByEdges[i] = true;
+    this->isBreakP[i] = false;
   }
 }
 
@@ -160,7 +158,7 @@ void Classification::junctionAutoDetection (void){
         this->junctions.append(thisJunction);
 
         //mark face of this junction in faceJunctionMark
-        foreach(const uint &value, facesOfThisJunction){
+        foreach(const uint &value, *facesOfThisJunction){
             this->faceJunctionMark[value] = junctionCount;
         }
         junctionCount ++;
