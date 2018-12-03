@@ -9,7 +9,6 @@
 class Classification {
  public:
   CCData* ccdata;
-  int numJunctionDetected = 0;
   QList<Sphere> junctions;
   char* mark;
   bool* isBreakP;
