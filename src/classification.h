@@ -1,15 +1,15 @@
 #ifndef CLASSIFICATION_H
 #define CLASSIFICATION_H
 
+#include <QDebug>
 #include <QSet>
 #include "ccdata.h"
 #include "root.h"
-#include <QDebug>
 
 class Classification {
  public:
   CCData* ccdata;
-  QList<Sphere> junctions;
+  QList<Sphere*> junctions;
   char* mark;
   bool* isBreakP;
 
@@ -26,23 +26,19 @@ class Classification {
   Classification(CCData* data);
   ~Classification();
 
-  void updateContainings(void); // 1
-  void junctionAutoDetection (void); // 2
-  int markVerticesInJunctionSpheres(void); // 3
-  void setJunctionRadius(float r); // 4
-  void classify(void); // 5
-  void setBreakPoints(QList<uint> *brks); // 6
+  void updateContainings(void);             // 1
+  void junctionAutoDetection(void);         // 2
+  int markVerticesInJunctionSpheres(void);  // 3
+  void setJunctionRadius(float r);          // 4
+  void classify(void);                      // 5
+  void setBreakPoints(QList<uint>* brks);   // 6
   void reset(void);
 
-
-  static int addOneToIntArray(int** arr,int row, int noA, int noV, int i);
+  static int addOneToIntArray(int** arr, int row, int noA, int noV, int i);
   float* centerOfAFace(uint index);
-  Sphere faceSet2JunctionPosition(QSet<uint>* set);
+  Sphere* faceSet2JunctionPosition(QSet<uint>* set);
   int nearestSphere(QSet<uint>* set);
   void floodVerticesThroughEdgesFromSeed(uint seed);
-
-
-
 };
 
 #endif  // CLASSIFICATION_H

@@ -1,4 +1,4 @@
-import QtQuick 2.9
+import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQml.Models 2.3
 import QtQuick.Dialogs 1.2
@@ -32,9 +32,6 @@ RCWindow {
 					viewer.forceActiveFocus()
 				}
 			}
-			//			FileDialog {
-			//				visible: true
-			//			}
 			Column {
 				spacing: panel.d
 				padding: panel.d
@@ -77,47 +74,35 @@ RCWindow {
 					spacing: 5
 					IconButton {
 						src: "qrc:/img/refresh.png"
+						onClicked: window.refresh()
 					}
 					IconButton {
 						src: "qrc:/img/plus.png"
-					}
-				}
-				Component {
-					id: root_view
-					Item {
-						Row {
-							spacing: panel.d
-							padding: panel.d
-							Rectangle {
-								width: panel.h
-								height: panel.h
-								color: rgb
-							}
-							Text {
-								text: "X"
-							}
-							Text {
-								text: "Y"
-							}
-							Text {
-								text: "X"
-							}
-							Text {
-								text: "R"
-							}
-							IconButton {
-								src: "qrc:/img/delete.png"
-							}
+						onClicked: {
+							root_model.append({
+																	"c": Qt.vector3d(1, 0, 0),
+																	"xyz": Qt.vector3d(0, 0, 0),
+																	"r": 10
+																})
 						}
 					}
 				}
-				ListModel {
-					id: root_model
-				}
-				ListView {
-					width: parent.width
-					model: root_model
-					delegate: root_view
+				Rectangle {
+					objectName: "root_list"
+					color: Qt.rgba(.8, .8, .8)
+					width: panel.width - panel.d * 2
+					height: 500
+					function append(root) {
+						root_model.append(root)
+					}
+					ListView {
+						model: ListModel {
+							id: root_model
+						}
+						anchors.fill: parent
+						delegate: RootView {
+						}
+					}
 				}
 			}
 		}

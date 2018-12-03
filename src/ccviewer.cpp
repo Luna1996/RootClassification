@@ -72,9 +72,6 @@ void CCViewer::init() {
   prog->bind();
 
   glGenVertexArrays(1, &vao);
-  GLuint buf[4];
-  glGenBuffers(4, buf);
-  vbo = {buf[0], buf[1], buf[2], buf[3]};
 
   bondProjection();
   bondView();
@@ -98,18 +95,28 @@ void CCViewer::_setRaw() {
 
   prog->bind();
 
+  if (glIsBuffer(vbo.v)) {
+    glDeleteBuffers(1, &vbo.v);
+    glDeleteBuffers(1, &vbo.e);
+    glDeleteBuffers(1, &vbo.f);
+  }
+
   if (raw) {
     glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo.v);
     glBindBuffer(GL_ARRAY_BUFFER, vbo.v);
     glBufferData(GL_ARRAY_BUFFER, 3 * raw->n1 * int(sizeof(float)), cc[0],
                  GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
     glEnableVertexAttribArray(0);
 
+    glGenBuffers(1, &vbo.e);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.e);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 2 * raw->n2 * int(sizeof(int)), cc[1],
                  GL_STATIC_DRAW);
 
+    glGenBuffers(1, &vbo.f);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.f);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 3 * raw->n3 * int(sizeof(int)), cc[2],
                  GL_STATIC_DRAW);
@@ -133,8 +140,13 @@ void CCViewer::_setMark() {
              &CCViewer::_setMark);
   prog->bind();
 
+  if (glIsBuffer(vbo.m)) {
+    glDeleteBuffers(1, &vbo.m);
+  }
   if (mark) {
     glBindVertexArray(vao);
+
+    glGenBuffers(1, &vbo.m);
     glBindBuffer(GL_ARRAY_BUFFER, vbo.m);
     glBufferData(GL_ARRAY_BUFFER, raw->n1, mark, GL_DYNAMIC_DRAW);
     glVertexAttribIPointer(1, 1, GL_BYTE, 0, nullptr);

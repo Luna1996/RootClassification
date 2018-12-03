@@ -15,5 +15,7 @@
         <file>qml/components/IconButton.qml</file>
         <file>qml/components/Title.qml</file>
         <file>img/delete.png</file>
+        <file>qml/components/RootView.qml</file>
+        <file>qml/components/LabelValue.qml</file>
     </qresource>
 </RCC>
