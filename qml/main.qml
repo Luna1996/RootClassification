@@ -112,6 +112,9 @@ RCWindow {
 						function append(root) {
 							root_model.append(root)
 						}
+						function clearRoot() {
+							root_model.clear()
+						}
 						model: ListModel {
 							id: root_model
 						}
