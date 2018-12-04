@@ -17,7 +17,7 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   Q_PROPERTY(qreal a2 READ a2 WRITE setA2)
   Q_PROPERTY(bool show_center READ isShowCenter WRITE setShowCenter)
 
-  Root** roots;
+  QVector3D c1, c2;
   CCData* raw;
   char* mark;
 
@@ -42,7 +42,7 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
 
   CCViewer();
   void setRaw(CCData* raw);
-  void setMark(char* m);
+  void setMark(char* m, QVector3D c1, QVector3D c2);
 
   float d() const { return distance; }
   void setD(float d) {

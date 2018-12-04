@@ -48,17 +48,18 @@ void MainWindow::addRoot(Root* r) {
 }
 
 void MainWindow::runAlgorithm(float x1, float y1, float z1, float x2, float y2,
-                              float z2) {
+                              float z2, float r1, float g1, float b1, float r2,
+                              float g2, float b2, float d1, float d2) {
   cls->junctions.clear();
   Sphere* j1 = new Sphere();
   Sphere* j2 = new Sphere();
 
-  j1->pos.setX(x1);
-  j1->pos.setY(y1);
-  j1->pos.setZ(z1);
-  j2->pos.setX(x2);
-  j2->pos.setY(y2);
-  j2->pos.setZ(z2);
+  j1->pos = QVector3D(x1, y1, z1);
+  j2->pos = QVector3D(x2, y2, z2);
+  j1->rgb = QVector3D(r1, g1, b1);
+  j2->rgb = QVector3D(r2, g2, b2);
+  j1->radius = d1;
+  j2->radius = d2;
 
   cls->junctions.append(j1);
   cls->junctions.append(j2);
@@ -66,5 +67,5 @@ void MainWindow::runAlgorithm(float x1, float y1, float z1, float x2, float y2,
   cls->setJunctionRadius(0.25);
   qDebug("%f,%f",cls->junctions.at(0)->radius, cls->junctions.at(1)->radius);
   cls->classify();
-  viewer->setMark(cls->mark);
+  viewer->setMark(cls->mark, j1->rgb, j2->rgb);
 }
