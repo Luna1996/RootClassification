@@ -120,6 +120,7 @@ Sphere* Classification::faceSet2JunctionPosition(QSet<uint>* set) {
 }
 
 void Classification::junctionAutoDetection(void) {
+  this->junctions.clear();
   bool f;
   uint seed = 0;
   uint nF = ccdata->n3;

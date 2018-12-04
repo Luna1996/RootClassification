@@ -66,7 +66,6 @@ void MainWindow::runAlgorithm(float x1, float y1, float z1, float x2, float y2,
 
   cls->markVerticesInJunctionSpheres();
   cls->setJunctionRadius(0.25);
-  qDebug("%f,%f",cls->junctions.at(0)->radius, cls->junctions.at(1)->radius);
   cls->classify();
   viewer->setMark(cls->mark, j1->rgb, j2->rgb);
 }
