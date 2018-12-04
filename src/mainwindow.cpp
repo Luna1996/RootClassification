@@ -43,6 +43,12 @@ void MainWindow::setSphere(float r, float g, float b, float x, float y, float z,
   update();
 }
 
+void MainWindow::clearSphere() {
+  if (viewer->sphere) delete viewer->sphere;
+  viewer = nullptr;
+  update();
+}
+
 void MainWindow::addRoot(Root* r) {
   QMetaObject::invokeMethod(root_list, "append",
                             Q_ARG(QVariant, QVariant::fromValue<Sphere*>(r)));

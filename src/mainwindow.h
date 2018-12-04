@@ -19,6 +19,7 @@ class MainWindow : public QQuickWindow {
   Q_INVOKABLE void setData(const QString& url);
   Q_INVOKABLE void refresh();
   Q_INVOKABLE void setSphere(float, float, float, float, float, float, float);
+  Q_INVOKABLE void clearSphere();
   Q_INVOKABLE void runAlgorithm(float x1, float y1, float z1, float x2,
                                 float y2, float z2, float r1, float g1,
                                 float b1, float r2, float g2, float b2,

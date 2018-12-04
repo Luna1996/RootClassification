@@ -120,10 +120,12 @@ RCWindow {
 						}
 						anchors.fill: parent
 						delegate: RootView {
+							m_window: window
 							current: root_list.currentIndex
 							onSelect: function (i, o) {
 								if (root_list.currentIndex === i) {
 									root_list.currentIndex = -1
+									window.clearSphere()
 								} else {
 									root_list.currentIndex = i
 									window.setSphere(o[0], o[1], o[2], o[3], o[4], o[5], o[6])
