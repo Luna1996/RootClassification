@@ -29,9 +29,17 @@ void MainWindow::refresh() {
                        rand() % 256 / 256.f);
     addRoot(j);
   }
+  getRoots();
 }
 
 void MainWindow::addRoot(Root* r) {
   QMetaObject::invokeMethod(root_list, "append",
                             Q_ARG(QVariant, QVariant::fromValue<Sphere*>(r)));
+}
+
+QList<Sphere*>* MainWindow::getRoots() {
+  QVariant r;
+  QMetaObject::invokeMethod(root_list, "getRoot", Q_RETURN_ARG(QVariant, r),
+                            Q_ARG(QVariant, 0));
+  return nullptr;
 }

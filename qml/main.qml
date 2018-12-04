@@ -88,19 +88,33 @@ RCWindow {
 					}
 				}
 				Rectangle {
-					objectName: "root_list"
 					color: Qt.rgba(.8, .8, .8)
 					width: panel.width - panel.d * 2
 					height: 500
-					function append(root) {
-						root_model.append(root)
-					}
 					ListView {
+						id: root_list
+						objectName: "root_list"
+						function append(root) {
+							root_model.append(root)
+						}
+						function getRoot(i) {
+							console.log(i)
+							var o = root_model.get(i)
+							return o.xyz
+						}
 						model: ListModel {
 							id: root_model
 						}
 						anchors.fill: parent
 						delegate: RootView {
+							listmodel: root_model
+							current: root_list.currentIndex
+							MouseArea {
+								anchors.fill: parent
+								onClicked: {
+									root_list.currentIndex = index
+								}
+							}
 						}
 					}
 				}

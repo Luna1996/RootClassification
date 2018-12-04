@@ -21,6 +21,7 @@ class MainWindow : public QQuickWindow {
 
  private:
   void addRoot(Root* r);
+  QList<Sphere*>* getRoots();
 
  private slots:
   void init();

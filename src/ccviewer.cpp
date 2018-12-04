@@ -2,6 +2,7 @@
 #include <math.h>
 #include <QFile>
 #include <QTextStream>
+#include <Qt3DExtras/QSphereMesh>
 #define PI 3.14159265f
 
 CCViewer::CCViewer()
@@ -10,9 +11,11 @@ CCViewer::CCViewer()
       prog(nullptr),
       vao(0),
       vbo{0, 0, 0, 0},
-      distance(0),
+      distance(10),
+      center(0, 0, 0),
       eye(0, 0),
-      show_center(false) {
+      show_center(false),
+      sphere(nullptr) {
   connect(this, &QQuickItem::windowChanged, this, &CCViewer::onWindowChanged);
   setFlag(QQuickItem::ItemHasContents);
 }
@@ -180,6 +183,7 @@ void CCViewer::paint() {
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.f);
   glDrawElements(GL_TRIANGLES, int(raw->n3) * 3, GL_UNSIGNED_INT, nullptr);
 
+  drawSphere(center, 5);
   //  prog->release();
   if (show_center) {
     glPointSize(3);
@@ -196,5 +200,35 @@ void CCViewer::paint() {
     glEnd();
   }
 
+  if (sphere) {
+    drawSphere(sphere->pos, sphere->radius);
+  }
+
   window()->resetOpenGLState();
+}
+
+void CCViewer::drawSphere(QVector3D& pos, float r, int lats, int longs) {
+  float i, j;
+  for (i = 0; i <= lats; i++) {
+    float lat0 = PI * (-0.5f + (i - 1) / lats);
+    float z0 = sin(lat0);
+    float zr0 = cos(lat0);
+
+    float lat1 = PI * (-0.5f + i / lats);
+    float z1 = sin(lat1);
+    float zr1 = cos(lat1);
+
+    glBegin(GL_QUAD_STRIP);
+    for (j = 0; j <= longs; j++) {
+      float lng = 2 * PI * (j - 1) / longs;
+      float x = cos(lng);
+      float y = sin(lng);
+
+      glVertex3f(x * zr0 * r + pos.x(), y * zr0 * r + pos.y(),
+                 z0 * r + pos.z());
+      glVertex3f(x * zr1 * r + pos.x(), y * zr1 * r + pos.y(),
+                 z1 * r + pos.z());
+    }
+    glEnd();
+  }
 }

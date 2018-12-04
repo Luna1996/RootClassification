@@ -1,10 +1,12 @@
 import QtQuick 2.11
 
 Column {
+	property var listmodel
+	property int current
 	width: panel.width - panel.d * 2
 	height: panel.h + panel.d * 2 + 1
 	Rectangle {
-		color: "white"
+		color: (current == index) ? "white" : "gray"
 		width: panel.width - panel.d * 2
 		height: panel.h + panel.d * 2
 		Row {
@@ -31,6 +33,9 @@ Column {
 			}
 			IconButton {
 				src: "qrc:/img/delete.png"
+				onClicked: {
+					listmodel.remove(index)
+				}
 			}
 		}
 	}

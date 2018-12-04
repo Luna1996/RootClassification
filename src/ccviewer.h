@@ -30,9 +30,11 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   float distance;
   QVector3D center;
   QVector2D eye;
-  bool show_center;
 
-private:
+  bool show_center;
+  Sphere* sphere;
+
+ private:
   void _setRaw();
   void _setMark();
 
@@ -69,6 +71,7 @@ private:
 
  private:
   static SP* loadShaderProgram(QString urls[2]);
+  void drawSphere(QVector3D& pos, float r, int lats = 20, int longs = 20);
   void bondProjection();
   void bondView();
   void reconnectPaint() {
