@@ -407,7 +407,7 @@ int Classification::nearestSphere(QSet<uint>* set) {
 }
 
 void Classification::setJunctionRadius(float r) {
-  if (junctions.size() == 2) {
+  if (junctions.size() == 2 | junctions.size() == 0) {
     Sphere* j1 = junctions.at(0);
     Sphere* j2 = junctions.at(1);
     float d = j1->pos.distanceToPoint(j2->pos);

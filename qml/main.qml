@@ -95,7 +95,9 @@ RCWindow {
 						onClicked: {
 							var r1 = root_model.get(0)
 							var r2 = root_model.get(1)
-							window.runAlgorithm(r1.mx, r1.my, r1.mz, r2.mx, r2.my, r2.mz)
+							window.runAlgorithm(r1.mx, r1.my, r1.mz, r2.mx, r2.my, r2.mz,
+																	r1.r, r1.g, r1.b, r2.r, r2.g, r2.b,
+																	r1.d, r2.d)
 						}
 					}
 				}

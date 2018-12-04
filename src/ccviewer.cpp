@@ -71,7 +71,8 @@ void CCViewer::init() {
   QString urls[2] = {":/src/cc.vert", ":/src/cc.frag"};
   prog = loadShaderProgram(urls);
   prog->bindAttributeLocation("vertex", 0);
-  prog->bindAttributeLocation("color", 1);
+  prog->bindAttributeLocation("vmark", 1);
+  prog->bindAttributeLocation("color", 2);
   prog->bind();
 
   glGenVertexArrays(1, &vao);
@@ -106,6 +107,7 @@ void CCViewer::_setRaw() {
 
   if (raw) {
     glBindVertexArray(vao);
+    glDisableVertexAttribArray(1);
 
     glGenBuffers(1, &vbo.v);
     glBindBuffer(GL_ARRAY_BUFFER, vbo.v);
@@ -129,9 +131,11 @@ void CCViewer::_setRaw() {
   bondView();
 }
 
-void CCViewer::setMark(char* m) {
+void CCViewer::setMark(char* m, QVector3D c1, QVector3D c2) {
   if (!raw) return;
   mark = m;
+  this->c1 = c1;
+  this->c2 = c2;
   connect(window(), &QQuickWindow::beforeRendering, this, &CCViewer::_setMark,
           Qt::DirectConnection);
   reconnectPaint();
@@ -167,6 +171,11 @@ void CCViewer::paint() {
   if (!raw) return;
 
   prog->bind();
+
+  if (mark) {
+    prog->setUniformValue(prog->uniformLocation("c1"), c1);
+    prog->setUniformValue(prog->uniformLocation("c2"), c2);
+  }
 
   bondProjection();
   prog->setUniformValue(prog->uniformLocation("mvp"), P * V);
