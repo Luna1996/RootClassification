@@ -17,5 +17,6 @@
         <file>img/delete.png</file>
         <file>qml/components/RootView.qml</file>
         <file>qml/components/LabelValue.qml</file>
+        <file>img/check.png</file>
     </qresource>
 </RCC>

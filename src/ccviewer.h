@@ -32,13 +32,14 @@ class CCViewer : public QQuickItem, protected QOpenGLFunctions_3_0 {
   QVector2D eye;
 
   bool show_center;
-  Sphere* sphere;
 
  private:
   void _setRaw();
   void _setMark();
 
  public:
+  Sphere* sphere;
+
   CCViewer();
   void setRaw(CCData* raw);
   void setMark(char* m);

@@ -18,10 +18,11 @@ class MainWindow : public QQuickWindow {
   MainWindow(QWindow* p = nullptr);
   Q_INVOKABLE void setData(const QString& url);
   Q_INVOKABLE void refresh();
+  Q_INVOKABLE void setSphere(float, float, float, float, float, float, float);
+  Q_INVOKABLE void runAlgorithm(float, float, float, float, float, float);
 
  private:
   void addRoot(Root* r);
-  QList<Sphere*>* getRoots();
 
  private slots:
   void init();

@@ -79,11 +79,23 @@ RCWindow {
 					IconButton {
 						src: "qrc:/img/plus.png"
 						onClicked: {
-							root_model.append({
-																	"c": Qt.vector3d(1, 0, 0),
-																	"xyz": Qt.vector3d(0, 0, 0),
-																	"r": 10
-																})
+							root_list.currentIndex = root_model.append({
+																													 "r": Math.random(),
+																													 "g": Math.random(),
+																													 "b": Math.random(),
+																													 "mx": 0,
+																													 "my": 0,
+																													 "mz": 0,
+																													 "d": 20
+																												 })
+						}
+					}
+					IconButton {
+						src: "qrc:/img/check.png"
+						onClicked: {
+							var r1 = root_model.get(0)
+							var r2 = root_model.get(1)
+							window.runAlgorithm(r1.mx, r1.my, r1.mz, r2.mx, r2.my, r2.mz)
 						}
 					}
 				}
@@ -94,26 +106,26 @@ RCWindow {
 					ListView {
 						id: root_list
 						objectName: "root_list"
+						currentIndex: -1
 						function append(root) {
 							root_model.append(root)
-						}
-						function getRoot(i) {
-							console.log(i)
-							var o = root_model.get(i)
-							return o.xyz
 						}
 						model: ListModel {
 							id: root_model
 						}
 						anchors.fill: parent
 						delegate: RootView {
-							listmodel: root_model
 							current: root_list.currentIndex
-							MouseArea {
-								anchors.fill: parent
-								onClicked: {
-									root_list.currentIndex = index
+							onSelect: function (i, o) {
+								if (root_list.currentIndex === i) {
+									root_list.currentIndex = -1
+								} else {
+									root_list.currentIndex = i
+									window.setSphere(o[0], o[1], o[2], o[3], o[4], o[5], o[6])
 								}
+							}
+							onDelete: function (i) {
+								root_model.remove(i)
 							}
 						}
 					}

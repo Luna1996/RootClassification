@@ -1,6 +1,6 @@
 #version 440
 
-uniform vec3 C;
+in vec3 C;
 flat in int mark;
 
 out vec4 color;

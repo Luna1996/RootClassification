@@ -71,7 +71,7 @@ void CCViewer::init() {
   QString urls[2] = {":/src/cc.vert", ":/src/cc.frag"};
   prog = loadShaderProgram(urls);
   prog->bindAttributeLocation("vertex", 0);
-  prog->bindAttributeLocation("vmark", 1);
+  prog->bindAttributeLocation("color", 1);
   prog->bind();
 
   glGenVertexArrays(1, &vao);
@@ -173,6 +173,8 @@ void CCViewer::paint() {
 
   glBindVertexArray(vao);
 
+  glVertexAttrib3f(2, .5, .5, .5);
+
   glPointSize(2);
   glDrawArrays(GL_POINTS, 0, int(raw->n1));
 
@@ -183,24 +185,24 @@ void CCViewer::paint() {
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo.f);
   glDrawElements(GL_TRIANGLES, int(raw->n3) * 3, GL_UNSIGNED_INT, nullptr);
 
-  drawSphere(center, 5);
-  //  prog->release();
   if (show_center) {
-    glPointSize(3);
+    glLineWidth(3);
     glBegin(GL_LINES);
-    glVertexAttribI1i(1, 0);
+    glVertexAttribI1i(1, 2);
+    glVertexAttrib3f(2, 1, 0, 0);
     glVertex3f(center[0], center[1], center[2]);
     glVertex3f(center[0] + 20, center[1], center[2]);
-    glVertexAttribI1i(1, 1);
+    glVertexAttrib3f(2, 0, 1, 0);
     glVertex3f(center[0], center[1], center[2]);
     glVertex3f(center[0], center[1] + 20, center[2]);
-    glVertexAttribI1i(1, 2);
+    glVertexAttrib3f(2, 0, 0, 1);
     glVertex3f(center[0], center[1], center[2]);
     glVertex3f(center[0], center[1], center[2] + 20);
     glEnd();
   }
 
   if (sphere) {
+    glVertexAttrib3f(2, sphere->rgb[0], sphere->rgb[1], sphere->rgb[2]);
     drawSphere(sphere->pos, sphere->radius);
   }
 
