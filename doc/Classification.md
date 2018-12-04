@@ -7,25 +7,29 @@
 
 ## Properties
 [ccdata]: #ccdata
-[numRootDetected]: #nord
-[roots]: #roots
+[junctions]: #jctns
 [mark]: #mk
+[isBreakP]: #sbp
 [edgeContaining]: #ec
 [edgeContainingL]: #ecn
+[edgeContainingLA]: #ecnA
 [faceContaining]: #fc
 [faceContainingL]: #fcn
+[faceContainingLA]: #fcnA
 [usedByEdges]: #ube
 
 | Name                               | Type      | Discription                                |
 | ---------------------------------- | --------- | ------------------------------------------ |
 | [ccdata]<a id='ccdata'></a> | CCData*    | A CCData structure containing original information of vertices, edges and faces. |
-| [numRootDetected]<a id='nord'></a> | int    | The number of roots that have been detected automatically. |
-| [roots]<a id='roots'></a> | QList\<Root\>    | An List of root. |
+| [junctions]<a id='jctns'></a> | QList\<Sphere\>    | An List of junction. |
 | [mark]<a id='mk'></a> | char*    | An 1d char array storing the result of classification. |
+| [isBreakP]<a id='ibp'></a> | bool*    | An 1d bool array storing whether a point is break point or not |
 | [edgeContaining]<a id='ec'></a> | int**    | An array in row i storing the indices of edges containing point i. |
 | [edgeContainingL]<a id='ecn'></a> | int*    | An array in row i storing the number of indices of edges containing point i. |
+| [edgeContainingLA]<a id='ecnA'></a> | int*    | An array in row i storing the length of subarray at edgeContaining[i] |
 | [faceContaining]<a id='fc'></a> | int**    | An array in row i storing the indices of edges containing point i. |
 | [faceContainingL]<a id='fcn'></a> | int*    | An array in row i storing the number of indices of edges containing point i. |
+| [faceContainingLA]<a id='fcnA'></a> | int*    | An array in row i storing the length of subarray at faceContaining[i] |
 | [usedByEdges]<a id='ube'></a> | bool*    | An array of bool indicating whether a point is used by edges or faces. |
 
 ## Static Functions
@@ -65,13 +69,6 @@
 
 [junctionAutoDetection]:#jad
 
-> <a id='jad'></a>
-> **void [junctionAutoDetection] (void)** 
->   
->   Automatically detect the number and position of junctions.
-
-
-
 [updateContainings]:#updatecontaining
 
 > <a id='updatecontaining'></a>
@@ -79,13 +76,27 @@
 > 
 > Update the indices of edges and faces containing point i and store them in members.
 
+> <a id='jad'></a>
+> **void [junctionAutoDetection] (void)** 
+>   
+>   Automatically detect the number and position of junctions.
+
 [markVerticesInJunctionSpheres]:#mark-in-spheres
 
 ><a id='mark-in-spheres'></a>
 > **void [markVerticesInJunctionSpheres] (void)**  
 > 
 > Mark vertices in spheres to corresponding root.
+
+[setJunctionRadius]:#sjr
+> <a id='sjr'></a>
+> **void [setJunctionRadius](float r)** 
+>   
+>   If there are right two junctions, set there radius d*r, where d is the distance between two junctions. This function runs only when the number of junctions is two.
 > 
+> * *r*  
+>   The ratio parameter: r = radius/d
+
 
 [classify]:#clsf
 
@@ -93,6 +104,24 @@
 > **void [classify] (void)**  
 > 
 > Classify all points to one of the roots, 0 or 1.
+
+[setBreakPoints]:#sbp
+
+><a id='sbp'></a>
+> **void [setBreakPoints](QList&lt;uint&gt;\* brks)**  
+>   Set points in list brks as break points in the member variable mark.
+>
+> * *brks*  
+>   A list storing the index of points that would be marked as break points.
+
+[reset]:#rst
+
+><a id='rst'></a>
+> **void [reset] (void)**  
+> 
+>  Reset all result of classification algorithm.
+
+[setBreakPoints]:#sbp
 
 [centerOfAface]:#coaf
 > <a id='coaf'></a>
@@ -137,11 +166,3 @@
 > * *seed*  
 >   The starting point of edges.
 
-[setJunctionRadius]:#sjr
-> <a id='sjr'></a>
-> **void [setJunctionRadius](float r)** 
->   
->   If there are right two junctions, set there radius d*r, where d is the distance between two junctions.
-> 
-> * *r*  
->   The ratio parameter: r = radius/d
