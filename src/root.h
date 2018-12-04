@@ -42,8 +42,8 @@ class Sphere : public QObject {
   void setY(float y) { pos.setY(y); }
   void setZ(float z) { pos.setZ(z); }
 
-  static bool inThisSphere(Sphere s, QVector3D p) {
-    return s.pos.distanceToPoint(p) <= s.radius ? true : false;
+  static bool inThisSphere(Sphere *s, QVector3D p) {
+    return s->pos.distanceToPoint(p) <= s->radius ? true : false;
   }
 };
 
