@@ -45,7 +45,7 @@ void MainWindow::setSphere(float r, float g, float b, float x, float y, float z,
 
 void MainWindow::clearSphere() {
   if (viewer->sphere) delete viewer->sphere;
-  viewer = nullptr;
+  viewer->sphere = nullptr;
   update();
 }
 

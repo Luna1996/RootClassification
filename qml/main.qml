@@ -133,6 +133,7 @@ RCWindow {
 							}
 							onDelete: function (i) {
 								root_model.remove(i)
+								window.clearSphere()
 							}
 						}
 					}
