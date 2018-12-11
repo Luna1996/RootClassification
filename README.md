@@ -19,4 +19,4 @@ If you have made sure that there exactly two spheres individually at the center 
 
 The result will be shown in the visualization field. Two roots are marked with different colors which are just the color of the filled circle corresponding to the cluster shown in the tool bar.
 
-If you want process other file please load new file and repeat the above procedure again.
+If you want process other files, please load new file and repeat the above procedure again.
