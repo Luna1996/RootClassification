@@ -3,7 +3,7 @@
 
 [CCData]: #this
 
-> The data stucture of cells complex and provide the method to load and save it.
+> The data stucture of skeleton and to provide the method to load and save it.
 
 ## Properties
 [n1]: #n
